@@ -26,15 +26,17 @@
             /                                                \
            |    _________________________________________     |
            |   |                                         |    |
-           |   |              .-''''''''''-.             |    |
-           |   |           .-'      |       '-.          |    |
-           |   |         .'        \|/        '.         |    |
-           |   |        /      ---- O ----      \        |    |
-           |   |       |         /|\             |       |    |
-           |   |       |          |              |       |    |
-           |   |        \       .-'-._          /        |    |
-           |   |         '.   .'     '.       .'         |    |
-           |   |           '-.___________.-'             |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |          _.-----------------._          |    |
+           |   |      _.-'                     '-._      |    |
+           |   |   .-'        .---------.          '-.   |    |
+           |   |  /          /    ___    \            \  |    |
+           |   | &lt;          |   .'   '.   |            &gt; |    |
+           |   |  \          \  |  ●  |  /            /  |    |
+           |   |   '-._       '._\___/_.'         _.-'   |    |
+           |   |       '---.._____________..---'         |    |
+           |   |                                         |    |
            |   |                                         |    |
            |   |  C:\&gt; _                                 |    |
            |   |                                         |    |
@@ -154,6 +156,7 @@
             <a href="#roll-panel"><span>02</span> Make a roll</a>
             <a href="#field-log"><span>03</span> Field log</a>
             <a href="#quick-rules"><span>04</span> Quick rules</a>
+            <a href="#special-rolls"><span>05</span> Equipment rolls</a>
           </nav>
 
           <section class="content-grid player-grid">
@@ -189,7 +192,7 @@
               <div class="details-row identity-row">
                 <div class="form-field">
                   <label for="security-clearance">Security clearance</label>
-                  <select id="security-clearance">
+                  <select id="security-clearance" aria-describedby="clearance-error">
                     <option value="ULTRAVIOLET">ULTRAVIOLET / U</option>
                     <option value="VIOLET">VIOLET / V</option>
                     <option value="INDIGO">INDIGO / N</option>
@@ -200,6 +203,7 @@
                     <option value="RED">RED / R</option>
                     <option value="INFRARED">INFRARED / I</option>
                   </select>
+                  <p class="clearance-error" id="clearance-error" role="alert" hidden>UNAVAILABLE // This one-shot is RED clearance only.</p>
                 </div>
                 <div class="form-field">
                   <label for="home-sector">Home subsector</label>
@@ -238,19 +242,25 @@
                 </div>
               </fieldset>
 
-              <div class="details-row">
+              <div class="details-row goal-row">
                 <div class="form-field">
                   <label for="personal-goal">Personal imperative <span>optional</span></label>
                   <input id="personal-goal" type="text" maxlength="100" placeholder="e.g. Make a useful friend in R&amp;D" />
                 </div>
-                <div class="form-field">
-                  <label for="secret-society">Restricted affiliation <span>optional</span></label>
-                  <input id="secret-society" type="text" maxlength="60" placeholder="Classified. Obviously." />
-                </div>
-                <div class="form-field">
-                  <label for="mutant-power">Mutant power <span>optional</span></label>
-                  <input id="mutant-power" type="text" maxlength="60" placeholder="Officially nonexistent." />
-                </div>
+              </div>
+              <div class="restricted-roll-grid" aria-label="Random restricted factor tables">
+                <section class="table-roll-card">
+                  <div class="table-roll-heading"><span>SECRET SOCIETY</span><button class="spark-button" id="roll-secret-society">Roll table</button></div>
+                  <output id="secret-society" aria-live="polite">UNASSIGNED</output>
+                  <p class="table-roll-meta" id="society-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
+                  <p class="table-roll-description" id="society-description">The dice will assign the affiliation. Choosing is treasonously convenient.</p>
+                </section>
+                <section class="table-roll-card">
+                  <div class="table-roll-heading"><span>MUTANT POWER</span><button class="spark-button" id="roll-mutant-power">Roll table</button></div>
+                  <output id="mutant-power" aria-live="polite">UNASSIGNED</output>
+                  <p class="table-roll-meta" id="power-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
+                  <p class="table-roll-description" id="power-description">The dice will assign the mutation. Friend Computer is already concerned.</p>
+                </section>
               </div>
               <div class="standard-goal">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.06 4.17L18.66 7.84l-3.33 3.24.79 4.58L12 13.5l-4.12 2.16.79-4.58-3.33-3.24 4.6-.67L12 3Z" /></svg>
@@ -352,6 +362,38 @@
                 <button class="spark-button" id="test-player-webhook">Test</button>
               </div>
               <p class="relay-message" id="player-hook-status" role="status">Paste a hook and this browser will announce your rolls.</p>
+            </article>
+
+            <article class="panel special-rolls-panel" id="special-rolls">
+              <div class="panel-heading compact-heading">
+                <div>
+                  <p class="eyebrow">ADDITIONAL TABLES // OPERATIONAL</p>
+                  <h2>Unsafe equipment</h2>
+                </div>
+                <span class="saved-state"><i></i> saved here</span>
+              </div>
+              <div class="special-roll-grid">
+                <section class="special-tool">
+                  <p class="special-kicker">R&amp;D FIELD TEST</p>
+                  <h3>Safe / Useful</h3>
+                  <p>Set the item’s number, then roll exactly 1d6. Skills, preparation, and assistance never modify this test.</p>
+                  <div class="special-control">
+                    <label for="rd-safe-useful-number">Item number</label>
+                    <select id="rd-safe-useful-number">
+                      <option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                    </select>
+                    <button class="button button-primary" id="roll-rd-item">Roll 1d6</button>
+                  </div>
+                  <output class="special-result is-idle" id="rd-special-result" aria-live="polite">Awaiting a one-die field test. No bonuses and no assistance.</output>
+                </section>
+                <section class="special-tool drug-tool">
+                  <p class="special-kicker">PHARMACEUTICAL INTERACTION</p>
+                  <h3>Mix the drugs</h3>
+                  <p>For unknown, contaminated, expired, mixed, or Bouncy Bubble Beverage-assisted medication: roll a column d6 and a row d6.</p>
+                  <button class="button button-primary" id="roll-drug-interaction">Mix drugs // roll 2d6</button>
+                  <output class="special-result is-idle" id="drug-roll-result" aria-live="polite">Awaiting an inadvisable pharmaceutical interaction.</output>
+                </section>
+              </div>
             </article>
           </section>
 
@@ -499,6 +541,8 @@
                 <div class="rd-number"><span>SAFE / USEFUL</span><b id="rd-number">4</b></div>
               </div>
               <p class="rd-rule"><b>Under</b> its number is safe. <b>Over</b> is useful. <b>Exactly</b> is both—if anyone survives the demonstration.</p>
+              <button class="button button-primary rd-test-button" id="roll-rd-dm">Test item // roll 1d6</button>
+              <output class="special-result is-idle" id="dm-rd-roll-result" aria-live="polite">Awaiting a one-die field test. No bonuses and no assistance.</output>
             </article>
 
             <article class="panel secrets-panel">
@@ -584,7 +628,7 @@
         <section class="creator-step is-active" data-creator-step="1">
           <div class="form-field">
             <label for="creator-clearance">Security clearance</label>
-            <select id="creator-clearance">
+            <select id="creator-clearance" aria-describedby="creator-error">
               <option value="ULTRAVIOLET">ULTRAVIOLET / U</option>
               <option value="VIOLET">VIOLET / V</option>
               <option value="INDIGO">INDIGO / N</option>
@@ -619,16 +663,20 @@
 
         <section class="creator-step" data-creator-step="3" hidden>
           <div class="creator-optional-grid creator-restricted-grid">
-            <div class="form-field">
-              <label for="creator-society">Secret society <span>if assigned</span></label>
-              <input id="creator-society" maxlength="60" placeholder="Classified. Obviously." />
-            </div>
-            <div class="form-field">
-              <label for="creator-power">Mutant power <span>if assigned</span></label>
-              <input id="creator-power" maxlength="60" placeholder="Officially nonexistent." />
-            </div>
+            <section class="table-roll-card">
+              <div class="table-roll-heading"><span>SECRET SOCIETY</span><button class="spark-button" id="creator-roll-society">Roll table</button></div>
+              <output id="creator-society" aria-live="polite">UNASSIGNED</output>
+              <p class="table-roll-meta" id="creator-society-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
+              <p class="table-roll-description" id="creator-society-description">The dice will assign the affiliation. Choosing is treasonously convenient.</p>
+            </section>
+            <section class="table-roll-card">
+              <div class="table-roll-heading"><span>MUTANT POWER</span><button class="spark-button" id="creator-roll-power">Roll table</button></div>
+              <output id="creator-power" aria-live="polite">UNASSIGNED</output>
+              <p class="table-roll-meta" id="creator-power-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
+              <p class="table-roll-description" id="creator-power-description">The dice will assign the mutation. Friend Computer is already concerned.</p>
+            </section>
           </div>
-          <p class="field-help">The GM may roll, choose, or tell you later. Your teammates are almost certainly concealing something too.</p>
+          <p class="field-help">These results are random assignments from the handout’s two-axis tables. Rerolling without authorization is suspicious.</p>
         </section>
 
         <section class="creator-step" data-creator-step="4" hidden>

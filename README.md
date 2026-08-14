@@ -5,7 +5,8 @@ A dependency-free, no-VTT companion for a shared **Lasers and Treason** one-shot
 ## What it includes
 
 - Player Mode: a locally saved Troubleshooter record, roll helper, kit checklist, field log, and concise rules reference.
-- A guided seven-step Troubleshooter creation protocol following the supplied handout: clearance, Service Group, restricted factors, Lasers/Treason number, clone designation, standard kit, and orders.
+- A guided seven-step Troubleshooter creation protocol following the supplied handout, with dice-assigned Secret Society and Mutant Power tables rather than free-entry fields.
+- Operational equipment tables for one-die R&amp;D Safe/Useful tests and two-axis pharmaceutical interaction rolls.
 - DM Mode: editable player-facing briefing, mission phase, pressure clock, secret notes, incident log, complication prompts, and R&D item generator.
 - Shareable player snapshots: the DM can copy a link containing the current briefing and clock and paste it into the group chat. No sign-in, server, or VTT required.
 - Default-dark, DOS-style terminal presentation that stays legible on phones.

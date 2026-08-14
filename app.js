@@ -6,20 +6,67 @@ const clearanceCodes = { ULTRAVIOLET: 'U', VIOLET: 'V', INDIGO: 'N', BLUE: 'B', 
 const creationSteps = [
   { kicker: '01 // CLEARANCE', title: 'Know your color.', description: 'Your clearance determines which equipment and sectors you may legally use. The current mission is tuned for RED clearance, citizen.', next: 'Choose service' },
   { kicker: '02 // SERVICE GROUP', title: 'Remember your useful former life.', description: 'Your service background may add +1d6 to a risky action when it honestly helps. No two Troubleshooters pick the same group.', next: 'Declare restrictions' },
-  { kicker: '03 // RESTRICTED FACTORS', title: 'Declare nothing suspicious.', description: 'Your GM may assign a secret society and mutant power. Record them here only if you are unlucky enough to have such treasonous facts.', next: 'Set your number' },
+  { kicker: '03 // RESTRICTED FACTORS', title: 'Submit to random screening.', description: 'Roll once on each restricted table. Secret societies and mutant powers are assigned by the dice; loyal citizens do not shop around.', next: 'Set your number' },
   { kicker: '04 // LASERS / TREASON', title: 'Calibrate your instincts.', description: 'Choose a number from 2 to 5. Low means you are better at Lasers; high means you are better at Treason.', next: 'Register your clone' },
   { kicker: '05 // DESIGNATION', title: 'Give your clone a name.', description: 'Use the approved format: Name–Clearance Letter–Home Subsector–Clone Number. Friend Computer has generously issued six clones.', next: 'Accept equipment' },
   { kicker: '06 // STANDARD ISSUE', title: 'Accept your property.', description: 'Friend Computer has issued this useful equipment for mission success. It would be ungrateful to misplace any of it.', next: 'Receive orders' },
   { kicker: '07 // STANDING ORDERS', title: 'Become useful.', description: 'Add an optional personal imperative. Succeed in the mission, find trouble, and report treason. Friend Computer believes in you.', next: 'Complete record' }
 ];
+
+const secretSocietyTable = [
+  [
+    { name: 'Anti-Mutant', description: 'Hunt mutants on sight, registered or otherwise. The only good mutant is a terminated mutant.' },
+    { name: 'Free Enterprise', description: 'Find new revenue, sell new products, and do absolutely anything for the bottom line.' }
+  ],
+  [
+    { name: 'Communists', description: 'End the Computer’s reign and bring fairness and equality to clones of every clearance.' },
+    { name: 'Illuminati', description: 'Your directives are comprehensively redacted. Manipulate events until the appointed time.' }
+  ],
+  [
+    { name: 'Corpore Metal', description: 'Bots are superior. Become more machine-like and show proper respect to your bot superiors.' },
+    { name: 'Mystics', description: 'Open every mind to wonderful new experiences, happiness, and enlightenment. With drugs.' }
+  ],
+  [
+    { name: 'Death Leopard', description: 'Party hard, wreck property, go fast, defy authority, and make sure everyone notices.' },
+    { name: 'Pro Tech', description: 'Acquire, use, modify, and hack as much technology as possible. Tech is the future.' }
+  ],
+  [
+    { name: 'First Church of Christ Computer Programmer', description: 'Friend Computer is not merely your friend but your god. Worship openly and often.' },
+    { name: 'Psion', description: 'Mutant powers are humanity’s next step. Refine them and protect registered mutants.' }
+  ],
+  [
+    { name: 'Frankenstein Destroyers', description: 'Bots are evil tools of oppression. Break, smash, and destroy them whenever possible.' },
+    { name: 'Sierra Club', description: 'Escape the metal cage, reach the Outdoors, and bring pieces of it back with you.' }
+  ]
+];
+
+const mutantPowerTable = [
+  ['Adhesive Skin', 'Energy Field', 'Pyrokinesis'],
+  ['Adrenalin Control', 'Hypersenses', 'Regeneration'],
+  ['Bureaucratic Intuition', 'Levitation', 'Slippery Skin'],
+  ['Chameleon', 'Machine Empathy', 'Telekinesis'],
+  ['Charm', 'Matter Eater', 'Teleportation'],
+  ['Electroshock', 'Mental Blast', 'X-Ray Vision']
+];
+
+const drugInteractionTable = [
+  ['Your Lasers/Treason number increases by one.', 'Your Lasers/Treason number decreases by one.'],
+  ['You feel a positive emotion—happiness, serenity, excitement, or loyalty—with overwhelming intensity.', 'You feel a negative emotion—fear, sadness, paranoia, or anger—with overwhelming intensity.'],
+  ['Your mind becomes clear and focused; you are immune to mind-affecting abilities.', 'Your usual hormone suppression is suddenly and completely counteracted.'],
+  ['Your mutation genes are suppressed; you cannot use or be affected by mutant powers.', 'Your mutant power activates repeatedly, randomly, and entirely on its own.'],
+  ['You see beautiful, complex hallucinations and know they are not real.', 'You lose all color vision; Alpha Complex becomes black, white, and gray.'],
+  ['Your left elbow itches slightly. Scratching it solves the problem.', 'You collapse screaming, frothing and seizing briefly before you die.']
+];
+
 const defaultState = {
   mode: 'player',
   character: {
-    name: '', nameRoot: '', clearance: 'RED', homeSector: '', clone: '1', service: '', number: 3, goal: '', society: '', power: '',
+    name: '', nameRoot: '', clearance: 'RED', homeSector: '', clone: '1', service: '', number: 3, goal: '', society: '', societyRoll: '', power: '', powerRoll: '',
     kit: { laser: true, armor: true, pdc: true, credit: true },
     log: ''
   },
   discord: { playerWebhook: '', dmWebhook: '' },
+  special: { rdNumber: 3, rdResult: '', rdTone: 'idle', drugResult: '' },
   session: {
     phase: 'Mission alert',
     title: 'The music has stopped. That is treason.',
@@ -76,6 +123,7 @@ function loadState() {
       ...clone(defaultState), ...stored,
       character: { ...clone(defaultState).character, ...(stored.character || {}), kit: { ...clone(defaultState).character.kit, ...(stored.character?.kit || {}) } },
       discord: { ...clone(defaultState).discord, ...(stored.discord || {}) },
+      special: { ...clone(defaultState).special, ...(stored.special || {}) },
       session: { ...clone(defaultState).session, ...(stored.session || {}), secrets: Array.isArray(stored.session?.secrets) ? stored.session.secrets : clone(defaultState).session.secrets }
     };
     migrateCharacter(loaded.character);
@@ -127,6 +175,13 @@ function migrateCharacter(character) {
       character.nameRoot = String(character.name).slice(0, 24);
     }
   }
+  // This one-shot is explicitly RED clearance. Older local saves are brought
+  // back into the available mission tier when the app loads.
+  character.clearance = 'RED';
+  character.societyRoll = String(character.societyRoll || '');
+  character.powerRoll = String(character.powerRoll || '');
+  if (!secretSocietyTable.flat().some(entry => entry.name === character.society)) character.society = '';
+  if (!mutantPowerTable.flat().includes(character.power)) character.power = '';
 }
 
 function characterDesignation(character = state.character) {
@@ -193,8 +248,6 @@ function updateCharacterForm() {
   $('#clone-count').value = c.clone;
   $('#service-group').value = c.service;
   $('#personal-goal').value = c.goal;
-  $('#secret-society').value = c.society;
-  $('#mutant-power').value = c.power;
   $('#field-log-input').value = c.log;
   $('#log-count').textContent = `${c.log.length} / 1400`;
   $$('.number-option').forEach(button => {
@@ -206,6 +259,7 @@ function updateCharacterForm() {
   $('#number-output').textContent = c.number;
   $('#roll-number-reference').textContent = c.number;
   $$('[data-kit]').forEach(input => { input.checked = Boolean(c.kit[input.dataset.kit]); });
+  updateRestrictedFactorForms();
 }
 
 function updateCreatorForm() {
@@ -216,8 +270,6 @@ function updateCreatorForm() {
   $('#creator-home-sector').value = c.homeSector;
   $('#creator-clone-count').value = c.clone;
   $('#creator-goal').value = c.goal;
-  $('#creator-society').value = c.society;
-  $('#creator-power').value = c.power;
   $('#creator-number-output').textContent = c.number;
   $('#creator-designation').textContent = characterDesignation(c);
   $$('.creator-number-option').forEach(button => {
@@ -227,6 +279,25 @@ function updateCreatorForm() {
     button.tabIndex = selected ? 0 : -1;
   });
   $$('[data-creator-kit]').forEach(input => { input.checked = Boolean(c.kit[input.dataset.creatorKit]); });
+  updateRestrictedFactorForms();
+}
+
+function updateRestrictedFactorForms() {
+  const c = state.character;
+  const society = secretSocietyTable.flat().find(entry => entry.name === c.society);
+  const societyName = society?.name || 'UNASSIGNED';
+  const societyRoll = c.societyRoll || 'ROLL 1d6 COLUMN + 1d6 ROW';
+  const societyDescription = society?.description || 'The dice will assign the affiliation. Choosing is treasonously convenient.';
+  const powerName = c.power || 'UNASSIGNED';
+  const powerRoll = c.powerRoll || 'ROLL 1d6 COLUMN + 1d6 ROW';
+  const powerDescription = c.power ? 'Practice and improve this treasonous ability without being observed.' : 'The dice will assign the mutation. Friend Computer is already concerned.';
+
+  ['secret-society', 'creator-society'].forEach(id => { $(`#${id}`).textContent = societyName; });
+  ['society-roll-detail', 'creator-society-roll-detail'].forEach(id => { $(`#${id}`).textContent = societyRoll; });
+  ['society-description', 'creator-society-description'].forEach(id => { $(`#${id}`).textContent = societyDescription; });
+  ['mutant-power', 'creator-power'].forEach(id => { $(`#${id}`).textContent = powerName; });
+  ['power-roll-detail', 'creator-power-roll-detail'].forEach(id => { $(`#${id}`).textContent = powerRoll; });
+  ['power-description', 'creator-power-description'].forEach(id => { $(`#${id}`).textContent = powerDescription; });
 }
 
 function discordWebhookValidation(value) {
@@ -344,6 +415,7 @@ function renderAll() {
   updateDMForm();
   updateDiscordForm();
   updateRollControls();
+  updateSpecialRolls();
 }
 
 function setMode(mode, shouldScroll = false) {
@@ -374,6 +446,107 @@ function setCharacterField(key, value) {
 function characterInput(key, event) {
   const value = setCharacterField(key, event.target.value);
   if (event.target.value !== value) event.target.value = value;
+}
+
+function chooseClearance(event, source) {
+  const select = event.target;
+  if (select.value !== 'RED') {
+    state.character.clearance = 'RED';
+    save();
+    updateCharacterForm();
+    updateCreatorForm();
+    select.setAttribute('aria-invalid', 'true');
+    if (source === 'creator') {
+      creatorError('UNAVAILABLE // This one-shot is RED clearance only. Higher and lower access tiers have been patriotically disabled.');
+    } else {
+      const error = $('#clearance-error');
+      error.hidden = false;
+      showToast('UNAVAILABLE // RED clearance citizens only.');
+    }
+    return;
+  }
+  select.removeAttribute('aria-invalid');
+  setCharacterField('clearance', 'RED');
+  updateCharacterForm();
+  updateCreatorForm();
+}
+
+function rollD6() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
+function rollRestrictedFactor(kind) {
+  const columnRoll = rollD6();
+  const rowRoll = rollD6();
+  if (kind === 'society') {
+    const column = columnRoll <= 3 ? 0 : 1;
+    const result = secretSocietyTable[rowRoll - 1][column];
+    state.character.society = result.name;
+    state.character.societyRoll = `COLUMN ${columnRoll} / ROW ${rowRoll}`;
+    showToast(`Restricted affiliation assigned: ${result.name}.`);
+  } else {
+    const column = Math.floor((columnRoll - 1) / 2);
+    state.character.power = mutantPowerTable[rowRoll - 1][column];
+    state.character.powerRoll = `COLUMN ${columnRoll} / ROW ${rowRoll}`;
+    showToast(`Mutant power assigned: ${state.character.power}. Please remain calm.`);
+  }
+  save();
+  updateCharacterForm();
+  updateCreatorForm();
+}
+
+function updateSpecialRolls() {
+  const special = state.special;
+  $('#rd-safe-useful-number').value = String(special.rdNumber);
+  $('#rd-number').textContent = special.rdNumber;
+  const rdText = special.rdResult || 'Awaiting a one-die field test. No bonuses and no assistance.';
+  ['rd-special-result', 'dm-rd-roll-result'].forEach(id => {
+    const output = $(`#${id}`);
+    output.textContent = rdText;
+    output.className = `special-result is-${special.rdTone || 'idle'}`;
+  });
+  const drugOutput = $('#drug-roll-result');
+  drugOutput.textContent = special.drugResult || 'Awaiting an inadvisable pharmaceutical interaction.';
+  drugOutput.className = `special-result ${special.drugResult ? 'is-useful' : 'is-idle'}`;
+}
+
+function setRDNumber(value) {
+  state.special.rdNumber = Math.max(2, Math.min(5, Number(value) || 3));
+  state.special.rdResult = '';
+  state.special.rdTone = 'idle';
+  save();
+  updateSpecialRolls();
+}
+
+function rollRDItem() {
+  const die = rollD6();
+  const number = state.special.rdNumber;
+  let outcome;
+  if (die < number) {
+    outcome = 'SAFE // It does something Safe, whether or not that helps.';
+    state.special.rdTone = 'safe';
+  } else if (die > number) {
+    outcome = 'USEFUL // It does something Useful, whether or not that is survivable.';
+    state.special.rdTone = 'useful';
+  } else {
+    outcome = 'SAFELY USEFUL // It does something both Safe and Useful. Congratulations are mandatory.';
+    state.special.rdTone = 'exact';
+  }
+  state.special.rdResult = `ROLLED ${die} AGAINST ${number} // ${outcome}`;
+  save();
+  updateSpecialRolls();
+  showToast(`R&D field test rolled ${die}: ${outcome.split(' // ')[0]}.`);
+}
+
+function mixDrugs() {
+  const columnRoll = rollD6();
+  const rowRoll = rollD6();
+  const column = columnRoll <= 3 ? 0 : 1;
+  const effect = drugInteractionTable[rowRoll - 1][column];
+  state.special.drugResult = `COLUMN ${columnRoll} / ROW ${rowRoll} // ${effect}`;
+  save();
+  updateSpecialRolls();
+  showToast('Pharmaceutical interaction resolved. Medical supervision remains unavailable.');
 }
 
 function sessionInput(key, event) {
@@ -740,7 +913,11 @@ function generateRD() {
   const number = Math.floor(Math.random() * 4) + 2;
   $('#rd-name').textContent = name;
   $('#rd-description').textContent = description;
-  $('#rd-number').textContent = number;
+  state.special.rdNumber = number;
+  state.special.rdResult = '';
+  state.special.rdTone = 'idle';
+  save();
+  updateSpecialRolls();
 }
 
 function bindEvents() {
@@ -749,13 +926,13 @@ function bindEvents() {
   $$('[data-scroll-to]').forEach(button => button.addEventListener('click', () => $(`#${button.dataset.scrollTo}`).scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })));
 
   $('#character-root').addEventListener('input', event => characterInput('nameRoot', event));
-  $('#security-clearance').addEventListener('change', event => { setCharacterField('clearance', event.target.value); syncCharacterDesignation(); });
+  $('#security-clearance').addEventListener('change', event => chooseClearance(event, 'main'));
   $('#home-sector').addEventListener('input', event => characterInput('homeSector', event));
   $('#clone-count').addEventListener('change', event => { setCharacterField('clone', event.target.value); syncCharacterDesignation(); });
   $('#service-group').addEventListener('change', event => characterInput('service', event));
   $('#personal-goal').addEventListener('input', event => characterInput('goal', event));
-  $('#secret-society').addEventListener('input', event => characterInput('society', event));
-  $('#mutant-power').addEventListener('input', event => characterInput('power', event));
+  $('#roll-secret-society').addEventListener('click', () => rollRestrictedFactor('society'));
+  $('#roll-mutant-power').addEventListener('click', () => rollRestrictedFactor('power'));
   $('#copy-designation').addEventListener('click', () => copyText(characterDesignation(), 'Designation copied for official use.'));
   $('#open-creator').addEventListener('click', openCreator);
   $('#make-troubleshooter').addEventListener('click', openCreator);
@@ -773,14 +950,14 @@ function bindEvents() {
   bindRadioKeyboard('.number-option', button => { state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); });
   $$('[data-kit]').forEach(input => input.addEventListener('change', event => { state.character.kit[event.target.dataset.kit] = event.target.checked; save(); }));
 
-  $('#creator-clearance').addEventListener('change', event => { setCharacterField('clearance', event.target.value); updateCharacterForm(); });
+  $('#creator-clearance').addEventListener('change', event => chooseClearance(event, 'creator'));
   $('#creator-service').addEventListener('change', event => { setCharacterField('service', event.target.value); updateCharacterForm(); });
   $('#creator-name-root').addEventListener('input', event => { characterInput('nameRoot', event); updateCharacterForm(); });
   $('#creator-home-sector').addEventListener('input', event => { characterInput('homeSector', event); updateCharacterForm(); });
   $('#creator-clone-count').addEventListener('change', event => { setCharacterField('clone', event.target.value); updateCharacterForm(); });
   $('#creator-goal').addEventListener('input', event => { characterInput('goal', event); updateCharacterForm(); });
-  $('#creator-society').addEventListener('input', event => { characterInput('society', event); updateCharacterForm(); });
-  $('#creator-power').addEventListener('input', event => { characterInput('power', event); updateCharacterForm(); });
+  $('#creator-roll-society').addEventListener('click', () => rollRestrictedFactor('society'));
+  $('#creator-roll-power').addEventListener('click', () => rollRestrictedFactor('power'));
   $$('.creator-number-option').forEach(button => button.addEventListener('click', () => {
     state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); updateCreatorForm();
   }));
@@ -802,6 +979,9 @@ function bindEvents() {
   $('#skill-bonus').addEventListener('click', () => { bonusSkill = !bonusSkill; updateRollControls(); });
   $('#style-bonus').addEventListener('click', () => { bonusStyle = !bonusStyle; updateRollControls(); });
   $('#roll-button').addEventListener('click', rollDice);
+  $('#rd-safe-useful-number').addEventListener('change', event => setRDNumber(event.target.value));
+  $('#roll-rd-item').addEventListener('click', rollRDItem);
+  $('#roll-drug-interaction').addEventListener('click', mixDrugs);
   $('#copy-player-brief').addEventListener('click', copyMissionBrief);
   $('#player-webhook').addEventListener('input', event => saveWebhook('player', event.target.value));
   $('#test-player-webhook').addEventListener('click', () => testDiscordWebhook('player'));
@@ -832,6 +1012,7 @@ function bindEvents() {
     save(); updateDMForm(); showToast('Added to the incident log.');
   });
   $('#generate-rd').addEventListener('click', generateRD);
+  $('#roll-rd-dm').addEventListener('click', rollRDItem);
   $$('.secret-tab').forEach(button => button.addEventListener('click', () => {
     activeSecret = Number(button.dataset.secret);
     $$('.secret-tab').forEach(tab => { const selected = Number(tab.dataset.secret) === activeSecret; tab.classList.toggle('active', selected); tab.setAttribute('aria-pressed', String(selected)); });
