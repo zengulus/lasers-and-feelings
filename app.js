@@ -758,6 +758,7 @@ function bindEvents() {
   $('#mutant-power').addEventListener('input', event => characterInput('power', event));
   $('#copy-designation').addEventListener('click', () => copyText(characterDesignation(), 'Designation copied for official use.'));
   $('#open-creator').addEventListener('click', openCreator);
+  $('#make-troubleshooter').addEventListener('click', openCreator);
   $('#field-log-input').addEventListener('input', event => {
     characterInput('log', event);
     $('#log-count').textContent = `${event.target.value.length} / 1400`;
