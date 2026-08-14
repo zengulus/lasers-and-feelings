@@ -93,6 +93,7 @@ body {
   color: var(--ink);
   background: radial-gradient(circle at 78% 8%, rgba(26, 101, 39, .16), transparent 28rem), var(--paper);
   font-family: var(--body);
+  font-size: 18px;
   letter-spacing: .015em;
 }
 body::selection { color: #021004; background: var(--green); }
@@ -160,39 +161,46 @@ body.booting { overflow: hidden; }
 @media (max-width: 720px) { .player-grid, .gm-layout { grid-template-columns: minmax(0, 1fr); }.panel-heading-actions, .relay-heading-actions { gap: 8px; }.designation-readout { grid-template-columns: 1fr auto; }.designation-readout > span { grid-column: 1 / -1; }.player-relay-panel, .dm-relay-panel { grid-column: 1; }.relay-row, .dm-relay-row { grid-template-columns: 1fr; }.relay-actions { justify-content: stretch; }.relay-actions > * { flex: 1; }.creator-meta { font-size: 8px; }.creator-identity-grid { grid-template-columns: 1fr 1fr; }.creator-identity-grid .form-field:last-child { grid-column: 1 / -1; }.creator-kit-grid, .creator-optional-grid { grid-template-columns: 1fr; }.boot-screen { padding: 14px; }.boot-frame { padding: 24px 18px; }.boot-monitor { margin-left: -4px; margin-right: -4px; } }
 
 /* Legibility pass: this is a terminal, not an eye exam. */
-.brand-subtitle, .clearance-pill, .saved-state, .broadcast-status, .file-tag, .live-label, .tiny-label, .number-reference, .log-footer, .secret-footer, .relay-light, .creator-meta { font-size: 13px; }
-.mission-ticker, .eyebrow { font-size: 14px; }
-.mode-button, .section-nav a, .mission-chip, .button { font-size: 16px; }
-.mission-chip b, .section-nav span, .outlook-row b { font-size: 14px; }
-.hero-summary, .gm-hero > div > p:last-child { font-size: 19px; }
-.outlook-row { font-size: 16px; }
-.mission-card-foot { font-size: 15px; }
-.form-field label, .number-fieldset legend, .clock-label-field label { font-size: 14px; }
-.form-field label span { font-size: 13px; }
-.form-field input, .form-field select, .form-field textarea, .clock-label-field input, .log-panel textarea, .incident-panel textarea, .secrets-panel textarea { font-size: 17px; }
-.field-help, .number-heading p, .roll-tip, .result-idle, .result-summary span, .result-note, .rule-card p, .clock-controls, .clock-outcome, .rd-item p, .rd-rule, .creator-description, .creator-orders, .relay-message, .relay-note, .result-flavor { font-size: 15px; }
-.number-option span, .roll-type small, .spark-kicker, .rd-badge, .rd-number span, .secret-tab, .relay-actions .button, .result-flavor span { font-size: 13px; }
-.roll-type b, .kit-list b, .creator-kit-grid b, .dm-cue-card b { font-size: 16px; }
-.dice-stepper, .bonus-toggle, .spark-button, .text-button { font-size: 14px; }
-.stepper-controls output { font-size: 19px; }
-.roll-button { font-size: 16px; }
+.brand-title { font-size: 19px; }
+.brand-subtitle, .clearance-pill, .saved-state, .broadcast-status, .file-tag, .live-label, .tiny-label, .number-reference, .log-footer, .secret-footer, .relay-light, .creator-meta { font-size: 15px; }
+.mission-ticker, .eyebrow { font-size: 16px; }
+.mode-button, .section-nav a, .mission-chip, .button { font-size: 18px; }
+.mission-chip b, .section-nav span, .outlook-row b { font-size: 16px; }
+.hero-summary, .gm-hero > div > p:last-child { font-size: 21px; }
+.outlook-row { font-size: 18px; }
+.mission-card-foot { font-size: 17px; }
+.form-field label, .number-fieldset legend, .clock-label-field label { font-size: 16px; }
+.form-field label span { font-size: 15px; }
+.form-field input, .form-field select, .form-field textarea, .clock-label-field input, .log-panel textarea, .incident-panel textarea, .secrets-panel textarea { font-size: 19px; }
+.field-help, .number-heading p, .roll-tip, .result-idle, .result-summary span, .result-note, .rule-card p, .clock-controls, .clock-outcome, .rd-item p, .rd-rule, .creator-description, .creator-orders, .relay-message, .relay-note, .result-flavor { font-size: 17px; }
+.number-option span, .roll-type small, .spark-kicker, .rd-badge, .rd-number span, .secret-tab, .relay-actions .button, .result-flavor span { font-size: 15px; }
+.roll-type b, .kit-list b, .creator-kit-grid b, .dm-cue-card b { font-size: 18px; }
+.dice-stepper, .bonus-toggle, .spark-button, .text-button { font-size: 16px; }
+.stepper-controls output { font-size: 21px; }
+.roll-button { font-size: 18px; }
 .result-summary b { font-size: 34px; }
-.die { font-size: 16px; }
-.kit-list small, .creator-kit-grid small, .dm-cue-card p { font-size: 14px; }
-.broadcast-footer { font-size: 13px; }
-.help-dialog p:not(.eyebrow) { font-size: 17px; }
-.toast, footer { font-size: 14px; }
-.button-onboard { min-height: 60px; padding: 16px 22px; border-color: #fff1a8; background: var(--yellow); color: #071006; box-shadow: 5px 5px 0 #715b11; font-size: 18px; }
+.die { font-size: 18px; }
+.kit-list small, .creator-kit-grid small, .dm-cue-card p { font-size: 16px; }
+.broadcast-footer { font-size: 15px; }
+.help-dialog p:not(.eyebrow) { font-size: 19px; }
+.toast, footer { font-size: 16px; }
+.designation-readout > span, .creator-designation-preview > span { font-size: 15px; }
+.standard-goal, .rules-header a { font-size: 17px; }
+.rule-number, .clock-value span { font-size: 15px; }
+.boot-kicker, .boot-line { font-size: 16px; }
+.boot-ack { font-size: 18px; }
+.boot-fineprint { font-size: 15px; }
+.button-onboard { min-height: 64px; padding: 17px 24px; border-color: #fff1a8; background: var(--yellow); color: #071006; box-shadow: 5px 5px 0 #715b11; font-size: 21px; }
 .button-onboard:hover { background: #fff0a0; color: #071006; box-shadow: 6px 6px 0 #715b11; }
-.creator-error { font-size: 14px; }
-.clearance-error { margin: 3px 0 0; padding: 10px 11px; border-left: 3px solid var(--red); background: #291111; color: #ffd0c7; font-size: 14px; line-height: 1.45; }
+.creator-error { font-size: 16px; }
+.clearance-error { margin: 3px 0 0; padding: 10px 11px; border-left: 3px solid var(--red); background: #291111; color: #ffd0c7; font-size: 16px; line-height: 1.45; }
 select[aria-invalid="true"] { border-color: var(--red) !important; box-shadow: 0 0 0 2px rgba(255, 91, 91, .2); }
 
 @media (max-width: 720px) {
-  .mode-button { font-size: 14px; }
-  .mission-ticker { font-size: 12px; }
-  .eyebrow { font-size: 13px; }
-  .button-onboard { min-height: 58px; font-size: 17px; }
+  .mode-button { font-size: 16px; }
+  .mission-ticker { font-size: 15px; }
+  .eyebrow { font-size: 15px; }
+  .button-onboard { min-height: 62px; font-size: 20px; }
   .boot-monitor { margin-left: -8px; margin-right: -8px; }
   .section-nav { width: 100%; min-width: 0; }
   .number-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -210,22 +218,30 @@ select[aria-invalid="true"] { border-color: var(--red) !important; box-shadow: 0
 .restricted-roll-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 5px 0 18px; }
 .table-roll-card { min-width: 0; padding: 15px; border: 1px solid #315f3b; background: #030a04; }
 .table-roll-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.table-roll-heading > span { color: var(--yellow); font: 13px var(--mono); letter-spacing: .09em; }
+.table-roll-heading > span { color: var(--yellow); font: 15px var(--mono); letter-spacing: .09em; }
 .table-roll-card output { display: block; min-height: 31px; margin-top: 13px; color: var(--green); font: 25px/.95 var(--display); letter-spacing: .03em; overflow-wrap: anywhere; }
-.table-roll-meta { margin: 9px 0 0; color: #8fb697; font: 13px var(--mono); letter-spacing: .06em; }
-.table-roll-description { margin: 9px 0 0; color: #bdd6bd; font-size: 15px; line-height: 1.5; }
+.table-roll-meta { margin: 9px 0 0; color: #8fb697; font: 15px var(--mono); letter-spacing: .06em; }
+.table-roll-description { margin: 9px 0 0; color: #bdd6bd; font-size: 17px; line-height: 1.5; }
 
-.special-rolls-panel { grid-column: 1 / -1; padding: 28px; border-color: #766729; }
-.special-roll-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.player-grid .character-panel, .player-grid .roll-panel { grid-column: 1 / -1; grid-row: auto; }
+.player-grid .log-panel { grid-column: 1; }
+.player-grid .supply-panel { grid-column: 2; }
+.player-grid .player-relay-panel { grid-column: 1 / -1; }
+.game-roll-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; margin-bottom: 18px; }
+.game-roll-tab { min-height: 64px; padding: 12px 15px; border: 1px solid var(--line); background: #020702; color: var(--muted); font: 18px var(--mono); text-transform: uppercase; }
+.game-roll-tab:hover { border-color: var(--green); color: var(--green); }
+.game-roll-tab.active { border-color: var(--yellow); background: #24210a; color: var(--yellow); box-shadow: inset 0 0 16px rgba(255, 219, 103, .06); }
+.game-roll-panel { padding-top: 3px; }
+.game-roll-panel[hidden] { display: none; }
 .special-tool { min-width: 0; padding: 19px; border: 1px solid #3c6745; background: #020702; }
 .special-tool.drug-tool { border-color: #766729; background: #100e04; }
-.special-kicker { margin: 0; color: var(--yellow); font: 13px var(--mono); letter-spacing: .1em; }
+.special-kicker { margin: 0; color: var(--yellow); font: 15px var(--mono); letter-spacing: .1em; }
 .special-tool h3 { margin: 8px 0; color: var(--green); font: 31px/.9 var(--display); letter-spacing: .025em; text-transform: uppercase; }
-.special-tool > p:not(.special-kicker) { margin: 0 0 16px; color: #bdd6bd; font-size: 15px; line-height: 1.55; }
+.special-tool > p:not(.special-kicker) { margin: 0 0 16px; color: #bdd6bd; font-size: 17px; line-height: 1.55; }
 .special-control { display: grid; grid-template-columns: auto 74px minmax(130px, 1fr); align-items: center; gap: 10px; }
-.special-control label { color: var(--green); font-size: 14px; }
-.special-control select { min-height: 48px; border: 1px solid #426d49; border-radius: 0; background: #020702; color: var(--ink); font: 17px var(--body); padding: 9px 11px; }
-.special-result { display: block; width: 100%; min-height: 73px; margin-top: 14px; padding: 13px; border: 1px solid #315f3b; background: #061006; color: #bdd6bd; font-size: 15px; line-height: 1.5; }
+.special-control label { color: var(--green); font-size: 16px; }
+.special-control select { min-height: 52px; border: 1px solid #426d49; border-radius: 0; background: #020702; color: var(--ink); font: 19px var(--body); padding: 9px 11px; }
+.special-result { display: block; width: 100%; min-height: 73px; margin-top: 14px; padding: 13px; border: 1px solid #315f3b; background: #061006; color: #bdd6bd; font-size: 17px; line-height: 1.5; }
 .special-result.is-safe { border-color: #4c87a0; color: #b9e9ff; }
 .special-result.is-useful { border-color: var(--yellow); color: #ffe894; }
 .special-result.is-exact { border-color: var(--green); color: #dfffd3; box-shadow: inset 0 0 18px rgba(125, 242, 154, .08); }
@@ -233,8 +249,15 @@ select[aria-invalid="true"] { border-color: var(--red) !important; box-shadow: 0
 .rd-panel .special-result { min-height: 0; }
 
 @media (max-width: 720px) {
-  .restricted-roll-grid, .special-roll-grid { grid-template-columns: minmax(0, 1fr); }
-  .special-rolls-panel { padding: 20px; }
+  .restricted-roll-grid { grid-template-columns: minmax(0, 1fr); }
+  .player-grid .character-panel, .player-grid .roll-panel, .player-grid .log-panel, .player-grid .supply-panel, .player-grid .player-relay-panel { grid-column: 1; }
   .special-control { grid-template-columns: 1fr 80px; }
   .special-control .button { grid-column: 1 / -1; }
+}
+
+@media (max-width: 420px) {
+  .brand-lockup { display: none; }
+  .game-roll-tabs { grid-template-columns: 1fr; }
+  .roll-panel .panel-heading { flex-direction: column; gap: 10px; }
+  .roll-type-toggle { grid-template-columns: 1fr; }
 }

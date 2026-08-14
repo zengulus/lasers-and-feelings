@@ -153,10 +153,9 @@
 
           <nav class="section-nav" aria-label="Player sections">
             <a href="#troubleshooter"><span>01</span> Your troubleshooter</a>
-            <a href="#roll-panel"><span>02</span> Make a roll</a>
+            <a href="#roll-panel"><span>02</span> All rolls</a>
             <a href="#field-log"><span>03</span> Field log</a>
             <a href="#quick-rules"><span>04</span> Quick rules</a>
-            <a href="#special-rolls"><span>05</span> Equipment rolls</a>
           </nav>
 
           <section class="content-grid player-grid">
@@ -271,49 +270,83 @@
             <article class="panel roll-panel" id="roll-panel">
               <div class="panel-heading compact-heading">
                 <div>
-                  <p class="eyebrow">PROBABILITY TERMINAL</p>
-                  <h2>Make a roll</h2>
+                  <p class="eyebrow">ONE ROLL CONSOLE</p>
+                  <h2>What are you rolling?</h2>
                 </div>
                 <span class="number-reference">YOUR NUMBER <b id="roll-number-reference">3</b></span>
               </div>
 
-              <div class="roll-type-toggle" role="radiogroup" aria-label="Choose roll type">
-                <button class="roll-type active" data-roll-type="lasers" role="radio" aria-checked="true">
-                  <span class="roll-glyph lasers-glyph">↗</span>
-                  <span><b>Lasers</b><small>Roll over your number</small></span>
-                </button>
-                <button class="roll-type" data-roll-type="treason" role="radio" aria-checked="false">
-                  <span class="roll-glyph treason-glyph">↘</span>
-                  <span><b>Treason</b><small>Roll under your number</small></span>
-                </button>
+              <div class="game-roll-tabs" role="tablist" aria-label="Choose a game roll">
+                <button class="game-roll-tab active" id="action-roll-tab" role="tab" aria-selected="true" aria-controls="action-roll-panel" data-game-roll="action">Action</button>
+                <button class="game-roll-tab" id="rd-roll-tab" role="tab" aria-selected="false" aria-controls="rd-roll-panel" data-game-roll="rd">R&amp;D item</button>
+                <button class="game-roll-tab" id="drug-roll-tab" role="tab" aria-selected="false" aria-controls="drug-roll-panel" data-game-roll="drugs">Mix drugs</button>
               </div>
 
-              <div class="dice-controls">
-                <div class="dice-stepper">
-                  <span>Dice pool</span>
-                  <div class="stepper-controls">
-                    <button class="stepper-button" id="remove-die" aria-label="Remove one die">−</button>
-                    <output id="dice-count" aria-live="polite">1d6</output>
-                    <button class="stepper-button" id="add-die" aria-label="Add one die">+</button>
+              <section class="game-roll-panel is-active" id="action-roll-panel" role="tabpanel" aria-labelledby="action-roll-tab" data-game-roll-panel="action">
+                <div class="roll-type-toggle" role="radiogroup" aria-label="Choose action type">
+                  <button class="roll-type active" data-roll-type="lasers" role="radio" aria-checked="true">
+                    <span class="roll-glyph lasers-glyph">↗</span>
+                    <span><b>Lasers</b><small>Your number or higher succeeds</small></span>
+                  </button>
+                  <button class="roll-type" data-roll-type="treason" role="radio" aria-checked="false">
+                    <span class="roll-glyph treason-glyph">↘</span>
+                    <span><b>Treason</b><small>Your number or lower succeeds</small></span>
+                  </button>
+                </div>
+
+                <div class="dice-controls">
+                  <div class="dice-stepper">
+                    <span>Dice pool</span>
+                    <div class="stepper-controls">
+                      <button class="stepper-button" id="remove-die" aria-label="Remove one die">−</button>
+                      <output id="dice-count" aria-live="polite">1d6</output>
+                      <button class="stepper-button" id="add-die" aria-label="Add one die">+</button>
+                    </div>
+                  </div>
+                  <div class="roll-bonuses">
+                    <button class="bonus-toggle" id="skill-bonus" aria-pressed="false"><span></span> Service skill</button>
+                    <button class="bonus-toggle" id="style-bonus" aria-pressed="false"><span></span> Clever plan</button>
                   </div>
                 </div>
-                <div class="roll-bonuses">
-                  <button class="bonus-toggle" id="skill-bonus" aria-pressed="false"><span></span> Service skill</button>
-                  <button class="bonus-toggle" id="style-bonus" aria-pressed="false"><span></span> Clever plan</button>
-                </div>
-              </div>
-              <p class="roll-tip">Each checked bonus adds a die. Assistants can add or subtract a die at the table.</p>
-              <button class="roll-button" id="roll-button">
-                <span>ROLL <b id="roll-button-label">LASERS</b></span>
-                <span class="roll-icon" aria-hidden="true">✦</span>
-              </button>
+                <p class="roll-tip">Start with 1d6. Add a die for a relevant Service Group and another for a clever plan. Assistance changes the pool at the table.</p>
+                <button class="roll-button" id="roll-button">
+                  <span>ROLL <b id="roll-button-label">LASERS</b></span>
+                  <span class="roll-icon" aria-hidden="true">✦</span>
+                </button>
 
-              <div class="roll-result" id="roll-result" aria-live="polite">
-                <div class="result-idle">
-                  <span class="result-spark">✦</span>
-                  <span>Your brave, objectively correct action awaits.</span>
+                <div class="roll-result" id="roll-result" aria-live="polite">
+                  <div class="result-idle">
+                    <span class="result-spark">✦</span>
+                    <span>Your brave, objectively correct action awaits.</span>
+                  </div>
                 </div>
-              </div>
+              </section>
+
+              <section class="game-roll-panel" id="rd-roll-panel" role="tabpanel" aria-labelledby="rd-roll-tab" data-game-roll-panel="rd" hidden>
+                <div class="special-tool">
+                  <p class="special-kicker">R&amp;D FIELD TEST</p>
+                  <h3>Safe / Useful</h3>
+                  <p>Set the item’s number and roll exactly 1d6. No bonuses. No assistance.</p>
+                  <div class="special-control">
+                    <label for="rd-safe-useful-number">Item number</label>
+                    <select id="rd-safe-useful-number">
+                      <option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                    </select>
+                    <button class="button button-primary" id="roll-rd-item">Roll R&amp;D</button>
+                  </div>
+                  <output class="special-result is-idle" id="rd-special-result" aria-live="polite">Awaiting a one-die field test.</output>
+                </div>
+              </section>
+
+              <section class="game-roll-panel" id="drug-roll-panel" role="tabpanel" aria-labelledby="drug-roll-tab" data-game-roll-panel="drugs" hidden>
+                <div class="special-tool drug-tool">
+                  <p class="special-kicker">PHARMACEUTICAL INTERACTION</p>
+                  <h3>Mix the drugs</h3>
+                  <p>Roll when medication is unknown, contaminated, expired, mixed, or taken with Bouncy Bubble Beverage.</p>
+                  <button class="button button-primary" id="roll-drug-interaction">Mix drugs // roll 2d6</button>
+                  <output class="special-result is-idle" id="drug-roll-result" aria-live="polite">Awaiting an inadvisable pharmaceutical interaction.</output>
+                </div>
+              </section>
             </article>
 
             <article class="panel log-panel" id="field-log">
@@ -364,37 +397,6 @@
               <p class="relay-message" id="player-hook-status" role="status">Paste a hook and this browser will announce your rolls.</p>
             </article>
 
-            <article class="panel special-rolls-panel" id="special-rolls">
-              <div class="panel-heading compact-heading">
-                <div>
-                  <p class="eyebrow">ADDITIONAL TABLES // OPERATIONAL</p>
-                  <h2>Unsafe equipment</h2>
-                </div>
-                <span class="saved-state"><i></i> saved here</span>
-              </div>
-              <div class="special-roll-grid">
-                <section class="special-tool">
-                  <p class="special-kicker">R&amp;D FIELD TEST</p>
-                  <h3>Safe / Useful</h3>
-                  <p>Set the item’s number, then roll exactly 1d6. Skills, preparation, and assistance never modify this test.</p>
-                  <div class="special-control">
-                    <label for="rd-safe-useful-number">Item number</label>
-                    <select id="rd-safe-useful-number">
-                      <option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
-                    </select>
-                    <button class="button button-primary" id="roll-rd-item">Roll 1d6</button>
-                  </div>
-                  <output class="special-result is-idle" id="rd-special-result" aria-live="polite">Awaiting a one-die field test. No bonuses and no assistance.</output>
-                </section>
-                <section class="special-tool drug-tool">
-                  <p class="special-kicker">PHARMACEUTICAL INTERACTION</p>
-                  <h3>Mix the drugs</h3>
-                  <p>For unknown, contaminated, expired, mixed, or Bouncy Bubble Beverage-assisted medication: roll a column d6 and a row d6.</p>
-                  <button class="button button-primary" id="roll-drug-interaction">Mix drugs // roll 2d6</button>
-                  <output class="special-result is-idle" id="drug-roll-result" aria-live="polite">Awaiting an inadvisable pharmaceutical interaction.</output>
-                </section>
-              </div>
-            </article>
           </section>
 
           <section class="quick-rules" id="quick-rules">

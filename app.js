@@ -133,6 +133,7 @@ function loadState() {
 
 let state = loadState();
 let rollType = 'lasers';
+let gameRollMode = 'action';
 let baseDice = 1;
 let bonusSkill = false;
 let bonusStyle = false;
@@ -408,6 +409,22 @@ function updateRollControls() {
   return total;
 }
 
+function setGameRollMode(mode) {
+  gameRollMode = ['action', 'rd', 'drugs'].includes(mode) ? mode : 'action';
+  $$('.game-roll-tab').forEach(button => {
+    const active = button.dataset.gameRoll === gameRollMode;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-selected', String(active));
+    button.tabIndex = active ? 0 : -1;
+  });
+  $$('[data-game-roll-panel]').forEach(panel => {
+    const active = panel.dataset.gameRollPanel === gameRollMode;
+    panel.hidden = !active;
+    panel.classList.toggle('is-active', active);
+  });
+  $('#roll-number-reference').hidden = gameRollMode !== 'action';
+}
+
 function renderAll() {
   updatePlayerBrief();
   updateCharacterForm();
@@ -416,6 +433,7 @@ function renderAll() {
   updateDiscordForm();
   updateRollControls();
   updateSpecialRolls();
+  setGameRollMode(gameRollMode);
 }
 
 function setMode(mode, shouldScroll = false) {
@@ -974,6 +992,8 @@ function bindEvents() {
 
   $$('.roll-type').forEach(button => button.addEventListener('click', () => { rollType = button.dataset.rollType; updateRollControls(); }));
   bindRadioKeyboard('.roll-type', button => { rollType = button.dataset.rollType; updateRollControls(); });
+  $$('.game-roll-tab').forEach(button => button.addEventListener('click', () => setGameRollMode(button.dataset.gameRoll)));
+  bindRadioKeyboard('.game-roll-tab', button => setGameRollMode(button.dataset.gameRoll));
   $('#add-die').addEventListener('click', () => { baseDice = Math.min(8, baseDice + 1); updateRollControls(); });
   $('#remove-die').addEventListener('click', () => { baseDice = Math.max(1, baseDice - 1); updateRollControls(); });
   $('#skill-bonus').addEventListener('click', () => { bonusSkill = !bonusSkill; updateRollControls(); });
