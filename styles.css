@@ -248,11 +248,17 @@ select[aria-invalid="true"] { border-color: var(--red) !important; box-shadow: 0
 .rd-test-button { width: 100%; margin-top: 14px; }
 .rd-panel .special-result { min-height: 0; }
 
+.broadcast-heading-actions { display: flex; align-items: center; justify-content: flex-end; gap: 14px; }
+.mission-roll-button { min-height: 58px; padding-inline: 20px; white-space: nowrap; }
+.mission-roll-readout { margin: 17px 0 0; padding: 12px 14px; border: 1px solid #766729; background: #171405; color: var(--yellow); font: 15px/1.5 var(--mono); letter-spacing: .065em; overflow-wrap: anywhere; }
+
 @media (max-width: 720px) {
   .restricted-roll-grid { grid-template-columns: minmax(0, 1fr); }
   .player-grid .character-panel, .player-grid .roll-panel, .player-grid .log-panel, .player-grid .supply-panel, .player-grid .player-relay-panel { grid-column: 1; }
   .special-control { grid-template-columns: 1fr 80px; }
   .special-control .button { grid-column: 1 / -1; }
+  .broadcast-panel > .panel-heading { flex-direction: column; }
+  .broadcast-heading-actions { width: 100%; justify-content: space-between; }
 }
 
 @media (max-width: 420px) {
@@ -260,4 +266,6 @@ select[aria-invalid="true"] { border-color: var(--red) !important; box-shadow: 0
   .game-roll-tabs { grid-template-columns: 1fr; }
   .roll-panel .panel-heading { flex-direction: column; gap: 10px; }
   .roll-type-toggle { grid-template-columns: 1fr; }
+  .broadcast-heading-actions { align-items: stretch; flex-direction: column; }
+  .mission-roll-button { width: 100%; }
 }

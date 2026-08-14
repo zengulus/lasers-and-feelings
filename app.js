@@ -74,6 +74,7 @@ const defaultState = {
     directive: 'Restore harmony',
     risk: 'B-7 Dance BOTS',
     status: 'Please resolve this issue with minimal noise, damage, and personal initiative.',
+    missionRoll: '',
     clock: 2,
     clockLabel: 'Sector compliance',
     snapshotAt: null,
@@ -99,6 +100,85 @@ const tones = [
   'Perfectly polished lies · tiny lasers · a very loud witness',
   'Mandatory happiness · accidental heroism · preventable fire',
   'Misfiled apocalypse · jealous bots · snack-based diplomacy'
+];
+
+const missionSlotTables = {
+  action: [
+    'Recover', 'Recalibrate', 'Escort', 'Silence', 'Replace', 'Protect', 'Audit', 'Deliver', 'Confiscate', 'Repair',
+    'Activate', 'Deactivate', 'Reclassify', 'Sanitize', 'Infiltrate', 'Evacuate', 'Interrogate', 'Install', 'Test', 'Destroy',
+    'Celebrate', 'Clone', 'Approve', 'Discredit', 'Contain'
+  ],
+  objective: [
+    'the singing reactor core', 'a crate of experimental happiness', 'the missing loyalty mascot', 'an unlicensed weather machine', 'the sector anthem archive',
+    'a prototype truth detector', 'the last clean food vat', 'an apologetic warbot', 'the Executive washroom key', 'a shipment of RED lasers',
+    'the malfunctioning clone printer', 'a sentient requisition form', 'the mandatory fun generator', 'a suspiciously blue scrubot', 'the Computer’s birthday cake',
+    'an INFRARED prophecy terminal', 'the emergency treason alarm', 'a box marked NOT MUTANTS', 'the sector’s oxygen permit', 'an invisible vending machine',
+    'the happiness medication supply', 'a heroic documentary crew', 'the backup Friend Computer', 'a forbidden outdoors sample', 'the new corridor map'
+  ],
+  location: [
+    'Briefing Room 7-RED', 'the abandoned algae kitchens', 'PLC warehouse 404', 'the transtube interchange', 'the Junior Citizens crèche',
+    'the Hot Fun processing plant', 'R&D Test Chamber B', 'the sector’s only working toilet', 'an unlisted sub-basement', 'the Armed Forces parade deck',
+    'the Happiness Officer’s office', 'a crowded confession booth', 'the bot repair chapel', 'the reactor’s gift shop', 'the clone decanting queue',
+    'an ultraviolet executive lounge', 'the mandatory dance auditorium', 'a corridor that denies existing', 'Waste Reclamation Annex 3', 'the Computer Appreciation Museum',
+    'the food-vat observation gantry', 'a stalled high-speed elevator', 'the secret society lost-property desk', 'the sector border checkpoint', 'the ceiling above your current position'
+  ],
+  threat: [
+    'communist vending machines', 'a committee of identical traitors', 'an overpromoted scrubot', 'mutant termites', 'the Armed Forces marching band',
+    'a cheerful reactor leak', 'an IntSec officer with a theory', 'a rival Troubleshooter team', 'weaponized paperwork', 'a swarm of loyalty drones',
+    'a homicidal service elevator', 'citizens enjoying themselves incorrectly', 'a deeply offended food vat', 'a secret society bake sale', 'an R&D prototype seeking tenure',
+    'a clone who remembers tomorrow', 'the lights becoming self-aware', 'an unauthorized breeze', 'a corridor-wide identity audit', 'a very persuasive infrared citizen',
+    'a tactical morale parade', 'a laser-resistant apology', 'a contagious sense of perspective', 'the Computer’s least favorite algorithm', 'your own mission briefing'
+  ],
+  complication: [
+    'the floor reports every footstep as treason', 'all doors now demand compliments', 'your equipment recognizes the wrong owner', 'the mission was already declared a success', 'one teammate appears on the target list',
+    'the lights go out whenever anyone tells the truth', 'the deadline expired yesterday', 'the only witness communicates through dance', 'the area is above your clearance', 'R&D wants the danger returned unscratched',
+    'everyone has been issued contradictory orders', 'the map redraws itself when observed', 'the target insists it is Friend Computer', 'failure will cancel lunch', 'success will also cancel lunch',
+    'a live documentary crew is rating your loyalty', 'every laser has been set to encouraging', 'the local bots have formed a jury', 'your replacement clones arrived first', 'the evidence keeps apologizing and escaping',
+    'the air is now a controlled substance', 'someone has weaponized the hold music', 'the Computer is personally monitoring your teamwork', 'there is a second, louder mission underneath this one', 'the briefing contains a legally binding typo'
+  ]
+};
+
+const missionTemplates = [
+  ({ action, objective, location, threat, complication }) => ({
+    title: `${objective} has changed hands.`,
+    copy: `At ${location}, ${threat} now controls ${objective}. Your team will ${action.toLowerCase()} it before anyone notices that ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `A routine delivery has become exciting.`,
+    copy: `${objective} must reach ${location}, where ${threat} is waiting. ${action} the assignment with exemplary calm; reports indicate that ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `Friend Computer requires a correction.`,
+    copy: `${location} has officially never contained ${objective}. Unfortunately, ${threat} has photographic evidence. ${action} the discrepancy while ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `The celebration must proceed.`,
+    copy: `A mandatory ceremony at ${location} needs ${objective}, but ${threat} has disrupted the schedule. ${action} the centerpiece despite the fact that ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `Property is behaving disloyally.`,
+    copy: `${objective} escaped into ${location} and may be cooperating with ${threat}. ${action} Computer property intact, unless ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `An inspection is already in progress.`,
+    copy: `Before inspectors reach ${location}, ${action.toLowerCase()} ${objective} and remove all traces of ${threat}. Work efficiently: ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `A loyal citizen has made an allegation.`,
+    copy: `${threat} has been blamed for an incident involving ${objective} at ${location}. ${action} the evidence, remembering that ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `The emergency is completely under control.`,
+    copy: `${location} is sealed around ${objective}. Inside are ${threat}. ${action} the situation without contradicting the official position that ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `Another team has failed successfully.`,
+    copy: `Recover their work at ${location}: ${objective}, several scorch marks, and ${threat}. Your revised order is to ${action.toLowerCase()} it, although ${complication}.`
+  }),
+  ({ action, objective, location, threat, complication }) => ({
+    title: `Today’s problem is tomorrow’s mandatory feature.`,
+    copy: `R&D will demonstrate ${objective} at ${location} in front of ${threat}. ${action} the prototype before the demonstration reveals that ${complication}.`
+  })
 ];
 
 const rdWords = {
@@ -367,6 +447,7 @@ function updateDMForm() {
   $('#dm-directive').value = s.directive;
   $('#dm-risk').value = s.risk;
   $('#dm-status-note').value = s.status;
+  $('#mission-roll-readout').textContent = s.missionRoll || 'MISSION TABLE READY // 10 FORMATS × 5 D25 SLOTS';
   $('#dm-clock-label').value = s.clockLabel;
   $('#dm-clock-value').textContent = s.clock;
   $('#clock-ring').style.setProperty('--progress', `${(s.clock / 6) * 100}%`);
@@ -925,6 +1006,29 @@ function bootApplication() {
 }
 
 function generateSpark() { $('#spark-display p').textContent = choose(sparks); }
+function rollMission() {
+  const templateRoll = Math.floor(Math.random() * missionTemplates.length);
+  const slotRolls = {};
+  const slots = {};
+  Object.entries(missionSlotTables).forEach(([slot, table]) => {
+    const roll = Math.floor(Math.random() * table.length);
+    slotRolls[slot] = roll + 1;
+    slots[slot] = table[roll];
+  });
+  const result = missionTemplates[templateRoll](slots);
+  const capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
+  state.session.title = capitalize(result.title).slice(0, 76);
+  state.session.copy = result.copy.slice(0, 420);
+  state.session.directive = `${slots.action} ${slots.objective}`.slice(0, 50);
+  state.session.risk = capitalize(slots.threat).slice(0, 50);
+  state.session.status = `${capitalize(slots.complication)}. Friend Computer expects a tidy resolution.`.slice(0, 150);
+  state.session.missionRoll = `FORMAT ${String(templateRoll + 1).padStart(2, '0')} // ACTION ${String(slotRolls.action).padStart(2, '0')} · OBJECT ${String(slotRolls.objective).padStart(2, '0')} · LOCATION ${String(slotRolls.location).padStart(2, '0')} · THREAT ${String(slotRolls.threat).padStart(2, '0')} · TWIST ${String(slotRolls.complication).padStart(2, '0')}`;
+  save();
+  updateDMForm();
+  updatePlayerBrief();
+  showToast('Fresh mission broadcast generated. Editing remains compulsory and permitted.');
+}
+
 function generateRD() {
   const name = `${choose(rdWords.first)} ${choose(rdWords.second)} ${choose(rdWords.third)}`;
   const description = choose(rdWords.use);
@@ -1008,6 +1112,7 @@ function bindEvents() {
   $('#clear-player-webhook').addEventListener('click', () => forgetWebhook('player'));
 
   $('#mission-phase').addEventListener('change', event => sessionInput('phase', event));
+  $('#roll-mission').addEventListener('click', rollMission);
   $('#dm-scene-title').addEventListener('input', event => sessionInput('title', event));
   $('#dm-scene-copy').addEventListener('input', event => sessionInput('copy', event));
   $('#dm-directive').addEventListener('input', event => sessionInput('directive', event));

@@ -444,7 +444,10 @@
                   <p class="eyebrow">PLAYER-FACING BROADCAST</p>
                   <h2>What they know</h2>
                 </div>
-                <span class="broadcast-status"><i></i> snapshot-ready</span>
+                <div class="broadcast-heading-actions">
+                  <span class="broadcast-status"><i></i> snapshot-ready</span>
+                  <button class="button button-primary mission-roll-button" id="roll-mission">Roll mission <span aria-hidden="true">↻</span></button>
+                </div>
               </div>
 
               <div class="broadcast-fields">
@@ -480,6 +483,7 @@
                   <input id="dm-status-note" type="text" maxlength="150" />
                 </div>
               </div>
+              <p class="mission-roll-readout" id="mission-roll-readout" aria-live="polite">MISSION TABLE READY // 10 FORMATS × 5 D25 SLOTS</p>
               <div class="broadcast-footer">
                 <span><i></i> Changes save on this device</span>
                 <button class="button button-primary" id="share-brief">Copy player snapshot <span aria-hidden="true">↗</span></button>
