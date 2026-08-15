@@ -220,6 +220,11 @@ let toastTimer;
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
+function setAsciiState(button, selected) {
+  const marker = $('.ascii-state', button);
+  if (marker) marker.textContent = selected ? '[X]' : '[ ]';
+}
+
 function save() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
@@ -294,6 +299,7 @@ function updateCharacterForm() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-checked', String(selected));
     button.tabIndex = selected ? 0 : -1;
+    setAsciiState(button, selected);
   });
   $('#number-output').textContent = `[${c.number}]`;
   $('#roll-number-reference').textContent = c.number;
@@ -319,6 +325,7 @@ function updateCreatorForm() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-checked', String(selected));
     button.tabIndex = selected ? 0 : -1;
+    setAsciiState(button, selected);
   });
   $$('[data-creator-kit]').forEach(input => {
     input.checked = Boolean(c.kit[input.dataset.creatorKit]);
@@ -440,6 +447,7 @@ function updateRollControls() {
     button.classList.toggle('active', active);
     button.setAttribute('aria-checked', String(active));
     button.tabIndex = active ? 0 : -1;
+    setAsciiState(button, active);
   });
   $('#skill-bonus').classList.toggle('active', bonusSkill);
   $('#style-bonus').classList.toggle('active', bonusStyle);
@@ -457,6 +465,7 @@ function setGameRollMode(mode) {
     button.classList.toggle('active', active);
     button.setAttribute('aria-selected', String(active));
     button.tabIndex = active ? 0 : -1;
+    setAsciiState(button, active);
   });
   $$('[data-game-roll-panel]').forEach(panel => {
     const active = panel.dataset.gameRollPanel === gameRollMode;
@@ -490,6 +499,7 @@ function setMode(mode, shouldScroll = false) {
     button.classList.toggle('active', active);
     button.setAttribute('aria-selected', String(active));
     button.tabIndex = active ? 0 : -1;
+    setAsciiState(button, active);
   });
   if (shouldScroll) window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
 }
@@ -637,11 +647,18 @@ function rollDice() {
   const complication = exact === 0 ? '' : exact === 1 ? 'One exact die: something goes wrong.' : exact === 2 ? 'Two exact dice: something goes very wrong.' : `${exact} exact dice: something goes horribly wrong.`;
   const flavor = rollFlavor(rollType, successes, exact);
   const report = { type: rollType, number, dice, total, successes, exact, outcome, complication, flavor, name: characterDesignation() };
-  const diceMarkup = dice.map(die => `<span class="die ${die === number ? 'exact' : isSuccess(die) ? 'success' : ''}">[${die}]</span>`).join('');
+  const diceMarkup = dice.map(die => {
+    const exactDie = die === number;
+    const successfulDie = isSuccess(die);
+    const marker = exactDie ? '!' : successfulDie ? '+' : '-';
+    const label = exactDie ? 'exact complication' : successfulDie ? 'success' : 'miss';
+    return `<span class="die ${exactDie ? 'exact' : successfulDie ? 'success' : ''}" aria-label="${die}, ${label}">[${die}${marker}]</span>`;
+  }).join('');
   $('#roll-result').className = 'roll-result has-result';
   $('#roll-result').innerHTML = `
     <div class="result-summary"><b>RESULT&gt; ${successes} ${successes === 1 ? 'SUCCESS' : 'SUCCESSES'}</b><span>${escapeHTML(outcome)}</span></div>
     <div class="die-row" aria-label="Rolled dice">${diceMarkup}</div>
+    <p class="result-note">KEY&gt; [+] SUCCESS // [!] EXACT // [-] MISS</p>
     <p class="result-note">${exact ? `<b>TREASONOUS LASER.</b> ${escapeHTML(complication)}` : 'No exact hits. Friend Computer approves this statistically ordinary behavior.'}</p>
     <p class="result-flavor"><span>COMMENT&gt;</span>${escapeHTML(flavor)}</p>`;
   void announcePlayerRoll(report);
@@ -846,7 +863,7 @@ function bootApplication() {
     if (ready) return;
     ready = true;
     acknowledge.disabled = false;
-    acknowledge.textContent = 'PRESS ENTER TO BEGIN';
+    acknowledge.textContent = '[ENTER] BEGIN';
     screen.classList.add('is-ready');
     acknowledge.focus();
   };
@@ -1012,7 +1029,12 @@ function bindEvents() {
   $('#roll-rd-gm').addEventListener('click', rollRDItem);
   $$('.secret-tab').forEach(button => button.addEventListener('click', () => {
     activeSecret = Number(button.dataset.secret);
-    $$('.secret-tab').forEach(tab => { const selected = Number(tab.dataset.secret) === activeSecret; tab.classList.toggle('active', selected); tab.setAttribute('aria-pressed', String(selected)); });
+    $$('.secret-tab').forEach(tab => {
+      const selected = Number(tab.dataset.secret) === activeSecret;
+      tab.classList.toggle('active', selected);
+      tab.setAttribute('aria-pressed', String(selected));
+      setAsciiState(tab, selected);
+    });
     updateGMTools();
   }));
   $('#secret-note').addEventListener('input', event => { state.session.secrets[activeSecret] = event.target.value; save(); });

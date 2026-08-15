@@ -18,7 +18,7 @@ GM console:
 - `TROUBLE.EXE` and `RNDLAB.EXE`: complication and experimental item generators.
 - `SECRETS.TXT` and `INCIDENT.LOG`: private local notes and table incidents.
 
-The interface uses literal ASCII directories, file names, status lines, checkboxes, dice, and meters. CSS only supplies the terminal palette and responsive layout.
+The interface is a single-column terminal transcript. Directories, tool boundaries, selected states, checkboxes, dice results, and meters are literal ASCII in the HTML or JavaScript. The small stylesheet only supplies the fixed-width palette, usable form controls, focus states, and modal visibility.
 
 Characters, settings, clocks, and notes are stored in the current browser. There are no accounts or server-side data. Keep the GM console on a device players cannot inspect.
 

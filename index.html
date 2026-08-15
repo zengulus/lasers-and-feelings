@@ -15,51 +15,21 @@
     <section class="boot-screen" id="boot-screen" role="dialog" aria-modal="true" aria-labelledby="boot-title">
       <div class="boot-frame">
         <p class="boot-kicker">FCOS // AUTHORIZED STARTUP SEQUENCE</p>
-        <pre class="boot-monitor boot-monitor-wide" aria-hidden="true">
-             ________________________________________________
-            /                                                \
-           |    _________________________________________     |
-           |   |                                         |    |
-           |   |                                         |    |
-           |   |                                         |    |
-           |   |          _.-----------------._          |    |
-           |   |      _.-'                     '-._      |    |
-           |   |   .-'        .---------.          '-.   |    |
-           |   |  /          /    ___    \            \  |    |
-           |   | &lt;          |   .'   '.   |            &gt; |    |
-           |   |  \          \  |  o  |  /            /  |    |
-           |   |   '-._       '._\___/_.'         _.-'   |    |
-           |   |       '---.._____________..---'         |    |
-           |   |                                         |    |
-           |   |                                         |    |
-           |   |  C:\&gt; _                                 |    |
-           |   |                                         |    |
-           |   |_________________________________________|    |
-           |                                                  |
-            \_________________________________________________/
-                   \___________________________________/
-                ___________________________________________
-             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_
-          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_
-       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_
-    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_
- _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.`-_
-:-------------------------------------------------------------------------:
-`---._.-------------------------------------------------------------._.---'
-        </pre>
-        <pre class="boot-monitor boot-monitor-compact" aria-hidden="true">       _________________________
-      /                         \
-     |   +-------------------+   |
-     |   |                   |   |
-     |   |      .-------.    |   |
-     |   |     /    o    \   |   |
-     |   |     \         /   |   |
-     |   |      '-------'    |   |
-     |   |                   |   |
-     |   |  C:\&gt; _           |   |
-     |   +-------------------+   |
-      \_________________________/
-          /_/_/_/_/_/_/_/</pre>
+        <pre class="boot-monitor" aria-hidden="true">     _______________
+    /               \
+   / +-------------+ \
+  |  |             |  |
+  |  |    .---.    |  |
+  |  |   /  o  \   |  |
+  |  |   \     /   |  |
+  |  |    '---'    |  |
+  |  |  C:\&gt; _     |  |
+   \ +-------------+ /
+    \_______________/
+      /___________\
+ +---------------------+
+ | /_/_/_/_/_/_/_/_/_ |
+ +---------------------+</pre>
         <h1 id="boot-title">FRIEND COMPUTER<br /><span>LOVES YOU</span></h1>
         <div class="boot-log" aria-live="polite" aria-atomic="false">
           <p class="boot-line">&gt; VERIFYING YOUR HAPPINESS...</p>
@@ -67,7 +37,7 @@
           <p class="boot-line">&gt; CALIBRATING LASER SAFETY...</p>
           <p class="boot-line">&gt; ACCESS GRANTED, LOYAL CITIZEN.</p>
         </div>
-        <button type="button" class="boot-ack" id="boot-ack" disabled>INITIALIZING...</button>
+        <button type="button" class="boot-ack" id="boot-ack" disabled>[WAIT] INITIALIZING...</button>
         <p class="boot-fineprint">Happiness is mandatory. This terminal is delighted to assist you.</p>
       </div>
     </section>
@@ -78,7 +48,7 @@
           <span class="brand-mark" aria-hidden="true">[L&amp;T]</span>
           <span class="brand-lockup">
             <span class="brand-title">LASERS &amp; TREASON</span>
-            <span class="brand-subtitle">FCOS TOOL DISK // VER 1.0</span>
+            <span class="brand-subtitle">C:\FCOS&gt; TOOL DISK // VER 1.0</span>
           </span>
         </a>
 
@@ -86,10 +56,10 @@
           <span class="clearance-pill">CLR=RED</span>
           <div class="mode-switch" role="tablist" aria-label="Choose a tool console">
             <button type="button" class="mode-button active" id="player-mode-button" role="tab" aria-selected="true" aria-controls="player-view" data-mode="player">
-              [F1] PLAYER
+              <span class="ascii-state" aria-hidden="true">[X]</span> F1 PLAYER
             </button>
             <button type="button" class="mode-button" id="gm-mode-button" role="tab" aria-selected="false" aria-controls="gm-view" data-mode="gm">
-              [F2] GM
+              <span class="ascii-state" aria-hidden="true">[ ]</span> F2 GM
             </button>
           </div>
         </div>
@@ -97,25 +67,20 @@
 
       <main id="top">
         <section class="view player-view is-active" id="player-view" role="tabpanel" aria-labelledby="player-mode-button">
-          <section class="terminal-directory" aria-labelledby="player-tools-title">
+          <nav class="terminal-directory" aria-labelledby="player-tools-title">
             <h1 class="sr-only" id="player-tools-title">Player tools</h1>
-            <pre class="ascii-banner ascii-banner-wide" aria-hidden="true">+--[ FCOS PLAYER TOOLBOX ]--------------------------------------------+
-| C:\FCOS\PLAYER&gt; DIR /W                                              |
-| [CITIZEN.DAT] [ROLL.EXE] [NOTES.TXT] [KIT.CHK] [RELAY.COM]          |
-| [RULES.HLP]                                                         |
-+---------------------------------------------------------------------+</pre>
-            <pre class="ascii-banner ascii-banner-compact" aria-hidden="true">+--[ PLAYER TOOLS ]-------+
-| C:\PLAYER&gt; DIR          |
-+-------------------------+</pre>
-            <nav class="section-nav" aria-label="Player tool directory">
-              <a href="#troubleshooter">[01] CITIZEN.DAT</a>
-              <a href="#roll-panel">[02] ROLL.EXE</a>
-              <a href="#field-log">[03] NOTES.TXT</a>
-              <a href="#kit-tool">[04] KIT.CHK</a>
-              <a href="#player-relay">[05] RELAY.COM</a>
-              <a href="#quick-rules">[06] RULES.HLP</a>
-            </nav>
-          </section>
+            <pre class="ascii-directory">+--[ PLAYER TOOLS ]
+| C:\FCOS\PLAYER&gt; DIR
+|
+| <a href="#troubleshooter">[01] CITIZEN.DAT</a>
+| <a href="#roll-panel">[02] ROLL.EXE</a>
+| <a href="#field-log">[03] NOTES.TXT</a>
+| <a href="#kit-tool">[04] KIT.CHK</a>
+| <a href="#player-relay">[05] RELAY.COM</a>
+| <a href="#quick-rules">[06] RULES.HLP</a>
+|
++--[ 6 FILES // READY ]</pre>
+          </nav>
 
           <section class="content-grid player-grid">
             <article class="panel character-panel" id="troubleshooter">
@@ -138,11 +103,11 @@
               </div>
               <div class="character-topline">
                 <div class="form-field grow-2">
-                  <label for="character-root">Name root</label>
+                  <label for="character-root">NAME_ROOT&gt;</label>
                   <input id="character-root" type="text" maxlength="24" placeholder="e.g. Gunne" autocomplete="off" />
                 </div>
                 <div class="form-field clone-field">
-                  <label for="clone-count">Clone</label>
+                  <label for="clone-count">CLONE&gt;</label>
                   <select id="clone-count" aria-label="Current clone number">
                     <option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option>
                   </select>
@@ -150,7 +115,7 @@
               </div>
               <div class="details-row identity-row">
                 <div class="form-field">
-                  <label for="security-clearance">Security clearance</label>
+                  <label for="security-clearance">SECURITY_CLEARANCE&gt;</label>
                   <select id="security-clearance" aria-describedby="clearance-error">
                     <option value="ULTRAVIOLET">ULTRAVIOLET / U</option>
                     <option value="VIOLET">VIOLET / V</option>
@@ -165,12 +130,12 @@
                   <p class="clearance-error" id="clearance-error" role="alert" hidden>UNAVAILABLE // This one-shot is RED clearance only.</p>
                 </div>
                 <div class="form-field">
-                  <label for="home-sector">Home subsector</label>
+                  <label for="home-sector">HOME_SUBSECTOR&gt;</label>
                   <input id="home-sector" type="text" maxlength="3" placeholder="e.g. GUY" autocomplete="off" />
                 </div>
               </div>
               <div class="form-field">
-                <label for="service-group">Former Service Group</label>
+                <label for="service-group">FORMER_SERVICE_GROUP&gt;</label>
                 <select id="service-group">
                   <option value="">Choose your useful former life...</option>
                   <option>Armed Forces</option>
@@ -192,28 +157,28 @@
                   <output class="number-output" id="number-output">[3]</output>
                 </div>
                 <div class="number-options" role="radiogroup" aria-label="Lasers and Treason number">
-                  <button type="button" class="number-option" data-number="2" role="radio" aria-checked="false"><b>2</b><span>Laser-bright</span></button>
-                  <button type="button" class="number-option active" data-number="3" role="radio" aria-checked="true"><b>3</b><span>Evenly wired</span></button>
-                  <button type="button" class="number-option" data-number="4" role="radio" aria-checked="false"><b>4</b><span>Questionable</span></button>
-                  <button type="button" class="number-option" data-number="5" role="radio" aria-checked="false"><b>5</b><span>Treasonous</span></button>
+                  <button type="button" class="number-option" data-number="2" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>2</b> // LASER-BRIGHT</button>
+                  <button type="button" class="number-option active" data-number="3" role="radio" aria-checked="true"><span class="ascii-state" aria-hidden="true">[X]</span> <b>3</b> // EVENLY WIRED</button>
+                  <button type="button" class="number-option" data-number="4" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>4</b> // QUESTIONABLE</button>
+                  <button type="button" class="number-option" data-number="5" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>5</b> // TREASONOUS</button>
                 </div>
               </fieldset>
 
               <div class="details-row goal-row">
                 <div class="form-field">
-                  <label for="personal-goal">Personal imperative <span>optional</span></label>
+                  <label for="personal-goal">PERSONAL_IMPERATIVE [OPTIONAL]&gt;</label>
                   <input id="personal-goal" type="text" maxlength="100" placeholder="e.g. Make a useful friend in R&amp;D" />
                 </div>
               </div>
               <div class="restricted-roll-grid" role="group" aria-label="Random restricted factor tables">
                 <section class="table-roll-card">
-                  <div class="table-roll-heading"><span>SECRET SOCIETY</span><button type="button" class="spark-button" id="roll-secret-society">[ROLL TABLE]</button></div>
+                  <div class="table-roll-heading"><span>SECRET SOCIETY</span> // <button type="button" class="spark-button" id="roll-secret-society">[ROLL TABLE]</button></div>
                   <output id="secret-society" aria-live="polite">UNASSIGNED</output>
                   <p class="table-roll-meta" id="society-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
                   <p class="table-roll-description" id="society-description">The dice will assign the affiliation. Choosing is treasonously convenient.</p>
                 </section>
                 <section class="table-roll-card">
-                  <div class="table-roll-heading"><span>MUTANT POWER</span><button type="button" class="spark-button" id="roll-mutant-power">[ROLL TABLE]</button></div>
+                  <div class="table-roll-heading"><span>MUTANT POWER</span> // <button type="button" class="spark-button" id="roll-mutant-power">[ROLL TABLE]</button></div>
                   <output id="mutant-power" aria-live="polite">UNASSIGNED</output>
                   <p class="table-roll-meta" id="power-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
                   <p class="table-roll-description" id="power-description">The dice will assign the mutation. Friend Computer is already concerned.</p>
@@ -223,6 +188,7 @@
                 <span class="ascii-prompt" aria-hidden="true">&gt;</span>
                 <span><b>STANDING_ORDER&gt;</b> Succeed. Find trouble. Shoot it. Report treason.</span>
               </div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel roll-panel" id="roll-panel">
@@ -236,20 +202,20 @@
               </div>
 
               <div class="game-roll-tabs" role="tablist" aria-label="Choose a game roll">
-                <button type="button" class="game-roll-tab active" id="action-roll-tab" role="tab" aria-selected="true" aria-controls="action-roll-panel" data-game-roll="action">[ACTION.EXE]</button>
-                <button type="button" class="game-roll-tab" id="rd-roll-tab" role="tab" aria-selected="false" aria-controls="rd-roll-panel" data-game-roll="rd">[RNDTEST.EXE]</button>
-                <button type="button" class="game-roll-tab" id="drug-roll-tab" role="tab" aria-selected="false" aria-controls="drug-roll-panel" data-game-roll="drugs">[DRUGMIX.EXE]</button>
+                <button type="button" class="game-roll-tab active" id="action-roll-tab" role="tab" aria-selected="true" aria-controls="action-roll-panel" data-game-roll="action"><span class="ascii-state" aria-hidden="true">[X]</span> ACTION.EXE</button>
+                <button type="button" class="game-roll-tab" id="rd-roll-tab" role="tab" aria-selected="false" aria-controls="rd-roll-panel" data-game-roll="rd"><span class="ascii-state" aria-hidden="true">[ ]</span> RNDTEST.EXE</button>
+                <button type="button" class="game-roll-tab" id="drug-roll-tab" role="tab" aria-selected="false" aria-controls="drug-roll-panel" data-game-roll="drugs"><span class="ascii-state" aria-hidden="true">[ ]</span> DRUGMIX.EXE</button>
               </div>
 
               <section class="game-roll-panel is-active" id="action-roll-panel" role="tabpanel" aria-labelledby="action-roll-tab" data-game-roll-panel="action">
                 <div class="roll-type-toggle" role="radiogroup" aria-label="Choose action type">
                   <button type="button" class="roll-type active" data-roll-type="lasers" role="radio" aria-checked="true">
-                    <span class="roll-glyph lasers-glyph">&gt;=</span>
-                    <span><b>Lasers</b><small>Your number or higher succeeds</small></span>
+                    <span class="ascii-state" aria-hidden="true">[X]</span> <span class="roll-glyph lasers-glyph">&gt;=</span>
+                    <b>LASERS</b> // <small>NUMBER OR HIGHER SUCCEEDS</small>
                   </button>
                   <button type="button" class="roll-type" data-roll-type="treason" role="radio" aria-checked="false">
-                    <span class="roll-glyph treason-glyph">&lt;=</span>
-                    <span><b>Treason</b><small>Your number or lower succeeds</small></span>
+                    <span class="ascii-state" aria-hidden="true">[ ]</span> <span class="roll-glyph treason-glyph">&lt;=</span>
+                    <b>TREASON</b> // <small>NUMBER OR LOWER SUCCEEDS</small>
                   </button>
                 </div>
 
@@ -287,7 +253,7 @@
                   <h3>Safe / Useful</h3>
                   <p>Set the item's number and roll exactly 1d6. No bonuses. No assistance.</p>
                   <div class="special-control">
-                    <label for="rd-safe-useful-number">Item number</label>
+                    <label for="rd-safe-useful-number">ITEM_NUMBER&gt;</label>
                     <select id="rd-safe-useful-number">
                       <option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
                     </select>
@@ -306,6 +272,7 @@
                   <output class="special-result is-idle" id="drug-roll-result" aria-live="polite">Awaiting an inadvisable pharmaceutical interaction.</output>
                 </div>
               </section>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel log-panel" id="field-log">
@@ -322,6 +289,7 @@
                 <span id="log-count">0 / 1400</span>
                 <span><i></i> saved to this device</span>
               </div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel supply-panel" id="kit-tool">
@@ -338,6 +306,7 @@
                 <label><input type="checkbox" data-kit="pdc" checked /><span class="custom-check">[X]</span><span><b>Personal Digital Companion</b><small>Friend Computer is listening</small></span></label>
                 <label><input type="checkbox" data-kit="credit" checked /><span class="custom-check">[X]</span><span><b>100 credits</b><small>For official necessities</small></span></label>
               </div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel relay-panel player-relay-panel" id="player-relay">
@@ -347,16 +316,17 @@
                   <p class="eyebrow">C:\FCOS\PLAYER\RELAY.COM</p>
                   <h2>OPTIONAL ROLL RELAY</h2>
                 </div>
-                <div class="relay-heading-actions"><button type="button" class="text-button" id="clear-player-webhook">[FORGET]</button><span class="relay-light" id="player-hook-light">STATUS&gt; LOCAL</span></div>
+                <div class="relay-heading-actions"><button type="button" class="text-button" id="clear-player-webhook">[FORGET]</button> // <span class="relay-light" id="player-hook-light">STATUS&gt; LOCAL</span></div>
               </div>
               <div class="relay-row">
                 <div class="form-field">
-                  <label for="player-webhook">Paste your Discord webhook</label>
+                  <label for="player-webhook">DISCORD_WEBHOOK&gt;</label>
                   <input id="player-webhook" type="password" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://discord.com/api/webhooks/..." />
                 </div>
                 <button type="button" class="spark-button" id="test-player-webhook">[TEST]</button>
               </div>
               <p class="relay-message" id="player-hook-status" role="status">Paste a hook and this browser will announce your rolls.</p>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
           </section>
@@ -375,29 +345,25 @@
               <article class="rule-card"><span class="rule-number">[03]</span><h3>Exact is exciting.</h3><p>A die exactly on your number still succeeds - but causes a Treasonous Laser complication.</p></article>
               <article class="rule-card red-rule"><span class="rule-number">[04]</span><h3>Assistance is optional.</h3><p>Someone can help for +1d6, or "help" for -1d6. Your pool never drops below 1d6.</p></article>
             </div>
+            <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
           </section>
         </section>
 
         <section class="view gm-view" id="gm-view" role="tabpanel" aria-labelledby="gm-mode-button" hidden>
-          <section class="terminal-directory" aria-labelledby="gm-tools-title">
+          <nav class="terminal-directory" aria-labelledby="gm-tools-title">
             <h1 class="sr-only" id="gm-tools-title">GM tools</h1>
-            <pre class="ascii-banner ascii-banner-wide" aria-hidden="true">+--[ FCOS GM TOOLBOX // PRIVATE ]-------------------------------------+
-| C:\FCOS\GM&gt; DIR /W                                                  |
-| [MISSION.EXE] [CLOCK.EXE] [TROUBLE.EXE] [RNDLAB.EXE]                |
-| [SECRETS.TXT] [INCIDENT.LOG]                                        |
-+---------------------------------------------------------------------+</pre>
-            <pre class="ascii-banner ascii-banner-compact" aria-hidden="true">+--[ GM TOOLS // PRIVATE ]+
-| C:\GM&gt; DIR              |
-+-------------------------+</pre>
-            <nav class="section-nav" aria-label="GM tool directory">
-              <a href="#mission-tool">[01] MISSION.EXE</a>
-              <a href="#clock-tool">[02] CLOCK.EXE</a>
-              <a href="#trouble-tool">[03] TROUBLE.EXE</a>
-              <a href="#rndlab-tool">[04] RNDLAB.EXE</a>
-              <a href="#secrets-tool">[05] SECRETS.TXT</a>
-              <a href="#incident-tool">[06] INCIDENT.LOG</a>
-            </nav>
-          </section>
+            <pre class="ascii-directory">+--[ GM TOOLS // PRIVATE ]
+| C:\FCOS\GM&gt; DIR
+|
+| <a href="#mission-tool">[01] MISSION.EXE</a>
+| <a href="#clock-tool">[02] CLOCK.EXE</a>
+| <a href="#trouble-tool">[03] TROUBLE.EXE</a>
+| <a href="#rndlab-tool">[04] RNDLAB.EXE</a>
+| <a href="#secrets-tool">[05] SECRETS.TXT</a>
+| <a href="#incident-tool">[06] INCIDENT.LOG</a>
+|
++--[ 6 FILES // PRIVATE ]</pre>
+          </nav>
 
           <section class="gm-layout">
             <article class="panel mission-tool" id="mission-tool">
@@ -421,6 +387,7 @@
               </div>
               <p class="mission-roll-readout" id="mission-roll-readout">STATUS&gt; READY // 10 FORMATS x 5 D25 TABLES</p>
               <button type="button" class="text-button" id="copy-mission-output">[COPY OUTPUT]</button>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <aside class="panel clock-panel" id="clock-tool">
@@ -443,6 +410,7 @@
                 <input id="gm-clock-label" type="text" maxlength="38" />
               </div>
               <p class="clock-outcome" id="clock-outcome">At 2: someone has noticed. They are filing a complaint in triplicate.</p>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </aside>
 
             <article class="panel spark-panel" id="trouble-tool">
@@ -462,6 +430,7 @@
                 <button type="button" class="text-button" id="copy-spark">[COPY]</button>
                 <button type="button" class="text-button" id="add-spark-log">[APPEND TO INCIDENT.LOG]</button>
               </div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel rd-panel" id="rndlab-tool">
@@ -482,6 +451,7 @@
               <p class="rd-rule"><b>UNDER</b> is safe. <b>OVER</b> is useful. <b>EXACT</b> is both.</p>
               <button type="button" class="button button-primary rd-test-button" id="roll-rd-gm">[TEST ITEM // ROLL 1D6]</button>
               <output class="special-result is-idle" id="gm-rd-roll-result" aria-live="polite">RESULT&gt; WAITING FOR INPUT_</output>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel secrets-panel" id="secrets-tool">
@@ -494,12 +464,13 @@
                 <span class="saved-state">STATUS&gt; LOCAL ONLY</span>
               </div>
               <div class="secret-tabs" role="group" aria-label="Secret note files">
-                <button type="button" class="secret-tab active" data-secret="0" aria-pressed="true">TWIST.DAT</button>
-                <button type="button" class="secret-tab" data-secret="1" aria-pressed="false">NPC.DAT</button>
-                <button type="button" class="secret-tab" data-secret="2" aria-pressed="false">EVIDENCE.DAT</button>
+                <button type="button" class="secret-tab active" data-secret="0" aria-pressed="true"><span class="ascii-state" aria-hidden="true">[X]</span> TWIST.DAT</button>
+                <button type="button" class="secret-tab" data-secret="1" aria-pressed="false"><span class="ascii-state" aria-hidden="true">[ ]</span> NPC.DAT</button>
+                <button type="button" class="secret-tab" data-secret="2" aria-pressed="false"><span class="ascii-state" aria-hidden="true">[ ]</span> EVIDENCE.DAT</button>
               </div>
               <textarea id="secret-note" maxlength="1000" placeholder="TYPE PRIVATE NOTES HERE_"></textarea>
               <div class="secret-footer"><span id="secret-note-label">TWIST.DAT</span><span>SAVED LOCALLY</span></div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 
             <article class="panel incident-panel" id="incident-tool">
@@ -513,6 +484,7 @@
               </div>
               <textarea id="incident-log" maxlength="1400" placeholder="RECORD PRAISE, BLAME, DAMAGE, AND SUSPICIOUS SUCCESS_"></textarea>
               <div class="log-footer"><span id="incident-count">0 / 1400</span><span>STATUS&gt; SAVED LOCALLY</span></div>
+              <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
           </section>
         </section>
@@ -536,7 +508,7 @@
 
         <section class="creator-step is-active" data-creator-step="1">
           <div class="form-field">
-            <label for="creator-clearance">Security clearance</label>
+            <label for="creator-clearance">SECURITY_CLEARANCE&gt;</label>
             <select id="creator-clearance" aria-describedby="creator-error">
               <option value="ULTRAVIOLET">ULTRAVIOLET / U</option>
               <option value="VIOLET">VIOLET / V</option>
@@ -554,7 +526,7 @@
 
         <section class="creator-step" data-creator-step="2" hidden>
           <div class="form-field">
-            <label for="creator-service">Former Service Group</label>
+            <label for="creator-service">FORMER_SERVICE_GROUP&gt;</label>
             <select id="creator-service">
               <option value="">Choose your useful former life...</option>
               <option>Armed Forces</option>
@@ -573,13 +545,13 @@
         <section class="creator-step" data-creator-step="3" hidden>
           <div class="creator-optional-grid creator-restricted-grid">
             <section class="table-roll-card">
-              <div class="table-roll-heading"><span>SECRET SOCIETY</span><button type="button" class="spark-button" id="creator-roll-society">[ROLL TABLE]</button></div>
+              <div class="table-roll-heading"><span>SECRET SOCIETY</span> // <button type="button" class="spark-button" id="creator-roll-society">[ROLL TABLE]</button></div>
               <output id="creator-society" aria-live="polite">UNASSIGNED</output>
               <p class="table-roll-meta" id="creator-society-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
               <p class="table-roll-description" id="creator-society-description">The dice will assign the affiliation. Choosing is treasonously convenient.</p>
             </section>
             <section class="table-roll-card">
-              <div class="table-roll-heading"><span>MUTANT POWER</span><button type="button" class="spark-button" id="creator-roll-power">[ROLL TABLE]</button></div>
+              <div class="table-roll-heading"><span>MUTANT POWER</span> // <button type="button" class="spark-button" id="creator-roll-power">[ROLL TABLE]</button></div>
               <output id="creator-power" aria-live="polite">UNASSIGNED</output>
               <p class="table-roll-meta" id="creator-power-roll-detail">ROLL 1d6 COLUMN + 1d6 ROW</p>
               <p class="table-roll-description" id="creator-power-description">The dice will assign the mutation. Friend Computer is already concerned.</p>
@@ -596,10 +568,10 @@
               <output class="number-output" id="creator-number-output">[3]</output>
             </div>
             <div class="number-options" role="radiogroup" aria-label="Choose a Lasers and Treason number">
-              <button type="button" class="creator-number-option" data-number="2" role="radio" aria-checked="false"><b>2</b><span>Laser-bright</span></button>
-              <button type="button" class="creator-number-option active" data-number="3" role="radio" aria-checked="true"><b>3</b><span>Evenly wired</span></button>
-              <button type="button" class="creator-number-option" data-number="4" role="radio" aria-checked="false"><b>4</b><span>Questionable</span></button>
-              <button type="button" class="creator-number-option" data-number="5" role="radio" aria-checked="false"><b>5</b><span>Treasonous</span></button>
+              <button type="button" class="creator-number-option" data-number="2" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>2</b> // LASER-BRIGHT</button>
+              <button type="button" class="creator-number-option active" data-number="3" role="radio" aria-checked="true"><span class="ascii-state" aria-hidden="true">[X]</span> <b>3</b> // EVENLY WIRED</button>
+              <button type="button" class="creator-number-option" data-number="4" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>4</b> // QUESTIONABLE</button>
+              <button type="button" class="creator-number-option" data-number="5" role="radio" aria-checked="false"><span class="ascii-state" aria-hidden="true">[ ]</span> <b>5</b> // TREASONOUS</button>
             </div>
           </fieldset>
         </section>
@@ -607,15 +579,15 @@
         <section class="creator-step" data-creator-step="5" hidden>
           <div class="creator-identity-grid">
             <div class="form-field">
-              <label for="creator-name-root">Name root</label>
+              <label for="creator-name-root">NAME_ROOT&gt;</label>
               <input id="creator-name-root" type="text" maxlength="24" placeholder="e.g. Gunne" autocomplete="off" />
             </div>
             <div class="form-field">
-              <label for="creator-home-sector">Home subsector</label>
+              <label for="creator-home-sector">HOME_SUBSECTOR&gt;</label>
               <input id="creator-home-sector" type="text" maxlength="3" placeholder="e.g. GUY" autocomplete="off" />
             </div>
             <div class="form-field">
-              <label for="creator-clone-count">Clone</label>
+              <label for="creator-clone-count">CLONE&gt;</label>
               <select id="creator-clone-count">
                 <option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option>
               </select>
@@ -636,7 +608,7 @@
 
         <section class="creator-step" data-creator-step="7" hidden>
           <div class="form-field">
-            <label for="creator-goal">Personal imperative <span>optional</span></label>
+            <label for="creator-goal">PERSONAL_IMPERATIVE [OPTIONAL]&gt;</label>
             <input id="creator-goal" type="text" maxlength="100" placeholder="e.g. Impress an R&amp;D representative" />
           </div>
           <div class="creator-orders"><b>Standing orders:</b> Succeed in the mission. Find trouble and shoot it. Root out and report treason - especially on your team.</div>
