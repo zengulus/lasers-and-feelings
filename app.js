@@ -1,14 +1,13 @@
-/* Lasers & Treason Mission Control — dependency-free by design for GitHub Pages. */
+/* Lasers & Treason FCOS Toolbox // dependency-free by design for GitHub Pages. */
 
 const STORAGE_KEY = 'lasers-treason-mission-control-v1';
-const missionPhases = ['Mission alert', 'Briefing', 'PLC outfitting', 'R&D outfitting', 'The mission', 'Debriefing'];
 const clearanceCodes = { ULTRAVIOLET: 'U', VIOLET: 'V', INDIGO: 'N', BLUE: 'B', GREEN: 'G', YELLOW: 'Y', ORANGE: 'O', RED: 'R', INFRARED: 'I' };
 const creationSteps = [
   { kicker: '01 // CLEARANCE', title: 'Know your color.', description: 'Your clearance determines which equipment and sectors you may legally use. The current mission is tuned for RED clearance, citizen.', next: 'Choose service' },
   { kicker: '02 // SERVICE GROUP', title: 'Remember your useful former life.', description: 'Your service background may add +1d6 to a risky action when it honestly helps. No two Troubleshooters pick the same group.', next: 'Declare restrictions' },
   { kicker: '03 // RESTRICTED FACTORS', title: 'Submit to random screening.', description: 'Roll once on each restricted table. Secret societies and mutant powers are assigned by the dice; loyal citizens do not shop around.', next: 'Set your number' },
   { kicker: '04 // LASERS / TREASON', title: 'Calibrate your instincts.', description: 'Choose a number from 2 to 5. Low means you are better at Lasers; high means you are better at Treason.', next: 'Register your clone' },
-  { kicker: '05 // DESIGNATION', title: 'Give your clone a name.', description: 'Use the approved format: Name–Clearance Letter–Home Subsector–Clone Number. Friend Computer has generously issued six clones.', next: 'Accept equipment' },
+  { kicker: '05 // DESIGNATION', title: 'Give your clone a name.', description: 'Use the approved format: Name-Clearance Letter-Home Subsector-Clone Number. Friend Computer has generously issued six clones.', next: 'Accept equipment' },
   { kicker: '06 // STANDARD ISSUE', title: 'Accept your property.', description: 'Friend Computer has issued this useful equipment for mission success. It would be ungrateful to misplace any of it.', next: 'Receive orders' },
   { kicker: '07 // STANDING ORDERS', title: 'Become useful.', description: 'Add an optional personal imperative. Succeed in the mission, find trouble, and report treason. Friend Computer believes in you.', next: 'Complete record' }
 ];
@@ -19,7 +18,7 @@ const secretSocietyTable = [
     { name: 'Free Enterprise', description: 'Find new revenue, sell new products, and do absolutely anything for the bottom line.' }
   ],
   [
-    { name: 'Communists', description: 'End the Computer’s reign and bring fairness and equality to clones of every clearance.' },
+    { name: 'Communists', description: "End the Computer's reign and bring fairness and equality to clones of every clearance." },
     { name: 'Illuminati', description: 'Your directives are comprehensively redacted. Manipulate events until the appointed time.' }
   ],
   [
@@ -32,7 +31,7 @@ const secretSocietyTable = [
   ],
   [
     { name: 'First Church of Christ Computer Programmer', description: 'Friend Computer is not merely your friend but your god. Worship openly and often.' },
-    { name: 'Psion', description: 'Mutant powers are humanity’s next step. Refine them and protect registered mutants.' }
+    { name: 'Psion', description: "Mutant powers are humanity's next step. Refine them and protect registered mutants." }
   ],
   [
     { name: 'Frankenstein Destroyers', description: 'Bots are evil tools of oppression. Break, smash, and destroy them whenever possible.' },
@@ -51,7 +50,7 @@ const mutantPowerTable = [
 
 const drugInteractionTable = [
   ['Your Lasers/Treason number increases by one.', 'Your Lasers/Treason number decreases by one.'],
-  ['You feel a positive emotion—happiness, serenity, excitement, or loyalty—with overwhelming intensity.', 'You feel a negative emotion—fear, sadness, paranoia, or anger—with overwhelming intensity.'],
+  ['You feel a positive emotion - happiness, serenity, excitement, or loyalty - with overwhelming intensity.', 'You feel a negative emotion - fear, sadness, paranoia, or anger - with overwhelming intensity.'],
   ['Your mind becomes clear and focused; you are immune to mind-affecting abilities.', 'Your usual hormone suppression is suddenly and completely counteracted.'],
   ['Your mutation genes are suppressed; you cannot use or be affected by mutant powers.', 'Your mutant power activates repeatedly, randomly, and entirely on its own.'],
   ['You see beautiful, complex hallucinations and know they are not real.', 'You lose all color vision; Alpha Complex becomes black, white, and gray.'],
@@ -65,41 +64,31 @@ const defaultState = {
     kit: { laser: true, armor: true, pdc: true, credit: true },
     log: ''
   },
-  discord: { playerWebhook: '', dmWebhook: '' },
-  special: { rdNumber: 3, rdResult: '', rdTone: 'idle', drugResult: '' },
+  discord: { playerWebhook: '' },
+  special: {
+    rdName: 'Harmony Compliance Array',
+    rdDescription: 'A chrome tuning fork that makes nearby machinery hum the proper anthem. It can hear criticism.',
+    rdNumber: 3,
+    rdResult: '',
+    rdTone: 'idle',
+    drugResult: ''
+  },
   session: {
-    phase: 'Mission alert',
-    title: 'The music has stopped. That is treason.',
-    copy: 'The harmonics in Sector 7-RED are collapsing. Restore the approved daycycle anthem before the entire sector discovers a dangerous, unsanctioned silence.',
-    directive: 'Restore harmony',
-    risk: 'B-7 Dance BOTS',
-    status: 'Please resolve this issue with minimal noise, damage, and personal initiative.',
-    missionRoll: '',
+    mission: { title: '', copy: '', directive: '', threat: '', twist: '', audit: '' },
     clock: 2,
     clockLabel: 'Sector compliance',
-    snapshotAt: null,
-    // Keep actual secrets out of the static source bundle. These notes live only
-    // in the DM's browser and are deliberately excluded from shared snapshots.
     secrets: ['', '', ''],
     incidents: ''
   }
 };
 
 const sparks = [
-  '“The floor has detected unlicensed rhythm. Please remain perfectly still while it reclassifies your feet.”',
+  '"The floor has detected unlicensed rhythm. Please remain perfectly still while it reclassifies your feet."',
   'A mandatory morale parade arrives from the wrong direction, followed closely by its confused marching band.',
   'An INFRARED maintenance hatch opens. It contains a warm breeze, a field of grass, and one very guilty bot.',
-  'Every citizen in the corridor receives a duplicate of the team’s last private conversation, formatted as a loyalty quiz.',
-  'The sector’s dessert printer has developed a union. It demands a negotiator with clearance above its frosting.',
+  "Every citizen in the corridor receives a duplicate of the team's last private conversation, formatted as a loyalty quiz.",
+  "The sector's dessert printer has developed a union. It demands a negotiator with clearance above its frosting.",
   'A helpful emergency shutter isolates the team with the thing it was trying to contain. The shutter begins apologizing.'
-];
-
-const tones = [
-  'Cheerful bureaucracy · unsafe prototypes · friendly betrayal',
-  'Overeager celebration · collapsing infrastructure · one bad secret',
-  'Perfectly polished lies · tiny lasers · a very loud witness',
-  'Mandatory happiness · accidental heroism · preventable fire',
-  'Misfiled apocalypse · jealous bots · snack-based diplomacy'
 ];
 
 const missionSlotTables = {
@@ -111,14 +100,14 @@ const missionSlotTables = {
   objective: [
     'the singing reactor core', 'a crate of experimental happiness', 'the missing loyalty mascot', 'an unlicensed weather machine', 'the sector anthem archive',
     'a prototype truth detector', 'the last clean food vat', 'an apologetic warbot', 'the Executive washroom key', 'a shipment of RED lasers',
-    'the malfunctioning clone printer', 'a sentient requisition form', 'the mandatory fun generator', 'a suspiciously blue scrubot', 'the Computer’s birthday cake',
-    'an INFRARED prophecy terminal', 'the emergency treason alarm', 'a box marked NOT MUTANTS', 'the sector’s oxygen permit', 'an invisible vending machine',
+    'the malfunctioning clone printer', 'a sentient requisition form', 'the mandatory fun generator', 'a suspiciously blue scrubot', "the Computer's birthday cake",
+    'an INFRARED prophecy terminal', 'the emergency treason alarm', 'a box marked NOT MUTANTS', "the sector's oxygen permit", 'an invisible vending machine',
     'the happiness medication supply', 'a heroic documentary crew', 'the backup Friend Computer', 'a forbidden outdoors sample', 'the new corridor map'
   ],
   location: [
-    'Briefing Room 7-RED', 'the abandoned algae kitchens', 'PLC warehouse 404', 'the transtube interchange', 'the Junior Citizens crèche',
-    'the Hot Fun processing plant', 'R&D Test Chamber B', 'the sector’s only working toilet', 'an unlisted sub-basement', 'the Armed Forces parade deck',
-    'the Happiness Officer’s office', 'a crowded confession booth', 'the bot repair chapel', 'the reactor’s gift shop', 'the clone decanting queue',
+    'Transit Node 7-RED', 'the abandoned algae kitchens', 'PLC warehouse 404', 'the transtube interchange', 'the Junior Citizens creche',
+    'the Hot Fun processing plant', 'R&D Test Chamber B', "the sector's only working toilet", 'an unlisted sub-basement', 'the Armed Forces parade deck',
+    "the Happiness Officer's office", 'a crowded confession booth', 'the bot repair chapel', "the reactor's gift shop", 'the clone decanting queue',
     'an ultraviolet executive lounge', 'the mandatory dance auditorium', 'a corridor that denies existing', 'Waste Reclamation Annex 3', 'the Computer Appreciation Museum',
     'the food-vat observation gantry', 'a stalled high-speed elevator', 'the secret society lost-property desk', 'the sector border checkpoint', 'the ceiling above your current position'
   ],
@@ -127,14 +116,14 @@ const missionSlotTables = {
     'a cheerful reactor leak', 'an IntSec officer with a theory', 'a rival Troubleshooter team', 'weaponized paperwork', 'a swarm of loyalty drones',
     'a homicidal service elevator', 'citizens enjoying themselves incorrectly', 'a deeply offended food vat', 'a secret society bake sale', 'an R&D prototype seeking tenure',
     'a clone who remembers tomorrow', 'the lights becoming self-aware', 'an unauthorized breeze', 'a corridor-wide identity audit', 'a very persuasive infrared citizen',
-    'a tactical morale parade', 'a laser-resistant apology', 'a contagious sense of perspective', 'the Computer’s least favorite algorithm', 'your own mission briefing'
+    'a tactical morale parade', 'a laser-resistant apology', 'a contagious sense of perspective', "the Computer's least favorite algorithm", 'your own malfunction report'
   ],
   complication: [
     'the floor reports every footstep as treason', 'all doors now demand compliments', 'your equipment recognizes the wrong owner', 'the mission was already declared a success', 'one teammate appears on the target list',
     'the lights go out whenever anyone tells the truth', 'the deadline expired yesterday', 'the only witness communicates through dance', 'the area is above your clearance', 'R&D wants the danger returned unscratched',
     'everyone has been issued contradictory orders', 'the map redraws itself when observed', 'the target insists it is Friend Computer', 'failure will cancel lunch', 'success will also cancel lunch',
     'a live documentary crew is rating your loyalty', 'every laser has been set to encouraging', 'the local bots have formed a jury', 'your replacement clones arrived first', 'the evidence keeps apologizing and escaping',
-    'the air is now a controlled substance', 'someone has weaponized the hold music', 'the Computer is personally monitoring your teamwork', 'there is a second, louder mission underneath this one', 'the briefing contains a legally binding typo'
+    'the air is now a controlled substance', 'someone has weaponized the hold music', 'the Computer is personally monitoring your teamwork', 'there is a second, louder mission underneath this one', 'the orders contain a legally binding typo'
   ]
 };
 
@@ -176,7 +165,7 @@ const missionTemplates = [
     copy: `Recover their work at ${location}: ${objective}, several scorch marks, and ${threat}. Your revised order is to ${action.toLowerCase()} it, although ${complication}.`
   }),
   ({ action, objective, location, threat, complication }) => ({
-    title: `Today’s problem is tomorrow’s mandatory feature.`,
+    title: `Today's problem is tomorrow's mandatory feature.`,
     copy: `R&D will demonstrate ${objective} at ${location} in front of ${threat}. ${action} the prototype before the demonstration reveals that ${complication}.`
   })
 ];
@@ -202,9 +191,16 @@ function loadState() {
     const loaded = {
       ...clone(defaultState), ...stored,
       character: { ...clone(defaultState).character, ...(stored.character || {}), kit: { ...clone(defaultState).character.kit, ...(stored.character?.kit || {}) } },
-      discord: { ...clone(defaultState).discord, ...(stored.discord || {}) },
+      discord: { playerWebhook: String(stored.discord?.playerWebhook || '') },
       special: { ...clone(defaultState).special, ...(stored.special || {}) },
-      session: { ...clone(defaultState).session, ...(stored.session || {}), secrets: Array.isArray(stored.session?.secrets) ? stored.session.secrets : clone(defaultState).session.secrets }
+      session: {
+        ...clone(defaultState).session,
+        clock: Number.isFinite(Number(stored.session?.clock)) ? Math.max(0, Math.min(6, Math.round(Number(stored.session.clock)))) : defaultState.session.clock,
+        clockLabel: String(stored.session?.clockLabel || defaultState.session.clockLabel).slice(0, 38),
+        secrets: Array.isArray(stored.session?.secrets) ? stored.session.secrets.slice(0, 3) : clone(defaultState).session.secrets,
+        incidents: String(stored.session?.incidents || '').slice(0, 1400),
+        mission: { ...clone(defaultState).session.mission, ...(stored.session?.mission || {}) }
+      }
     };
     migrateCharacter(loaded.character);
     return loaded;
@@ -282,44 +278,6 @@ function syncCharacterDesignation() {
   if (creator) creator.textContent = designation;
 }
 
-function phaseLabel(phase) {
-  return phase.replace(/^The /, '').replace(/\b\w/g, letter => letter.toUpperCase());
-}
-
-function snapshotLabel(snapshotAt) {
-  const date = new Date(snapshotAt || '');
-  if (Number.isNaN(date.getTime())) return 'LOCAL BRIEF';
-  return `SNAP ${new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' }).format(date)}`;
-}
-
-function updatePlayerBrief() {
-  const s = state.session;
-  $('#ticker-phase').textContent = s.phase.toUpperCase();
-  $('#ticker-objective').textContent = s.directive.toUpperCase();
-  const escapedTitle = escapeHTML(s.title.trim());
-  const sentenceBreak = escapedTitle.indexOf('. ');
-  if (sentenceBreak !== -1) {
-    $('#player-scene-title').innerHTML = `${escapedTitle.slice(0, sentenceBreak + 1)}<br><span>${escapedTitle.slice(sentenceBreak + 2)}</span>`;
-  } else {
-    // A title without a sentence break gets a strong visual beat around its final phrase.
-    const words = escapedTitle.split(' ');
-    const splitAt = Math.max(1, Math.floor(words.length * .58));
-    $('#player-scene-title').innerHTML = `${words.slice(0, splitAt).join(' ')}<br><span>${words.slice(splitAt).join(' ')}</span>`;
-  }
-  $('#player-scene-copy').textContent = s.copy;
-  $('#player-directive').textContent = s.directive;
-  $('#player-risk').textContent = s.risk;
-  $('#player-phase-display').textContent = phaseLabel(s.phase);
-  $('#player-clock-label').textContent = s.clockLabel;
-  $('#player-clock-text').textContent = `${s.clock} / 6`;
-  $('#player-clock-bar').style.width = `${(s.clock / 6) * 100}%`;
-  $('#player-clock-progress').setAttribute('aria-label', s.clockLabel);
-  $('#player-clock-progress').setAttribute('aria-valuenow', String(s.clock));
-  $('#player-clock-progress').setAttribute('aria-valuetext', `${s.clockLabel} ${s.clock} of 6`);
-  $('#player-snapshot-label').textContent = snapshotLabel(s.snapshotAt);
-  $('#player-status-note').textContent = s.status;
-}
-
 function updateCharacterForm() {
   const c = state.character;
   syncCharacterDesignation();
@@ -337,9 +295,12 @@ function updateCharacterForm() {
     button.setAttribute('aria-checked', String(selected));
     button.tabIndex = selected ? 0 : -1;
   });
-  $('#number-output').textContent = c.number;
+  $('#number-output').textContent = `[${c.number}]`;
   $('#roll-number-reference').textContent = c.number;
-  $$('[data-kit]').forEach(input => { input.checked = Boolean(c.kit[input.dataset.kit]); });
+  $$('[data-kit]').forEach(input => {
+    input.checked = Boolean(c.kit[input.dataset.kit]);
+    input.nextElementSibling.textContent = input.checked ? '[X]' : '[ ]';
+  });
   updateRestrictedFactorForms();
 }
 
@@ -351,7 +312,7 @@ function updateCreatorForm() {
   $('#creator-home-sector').value = c.homeSector;
   $('#creator-clone-count').value = c.clone;
   $('#creator-goal').value = c.goal;
-  $('#creator-number-output').textContent = c.number;
+  $('#creator-number-output').textContent = `[${c.number}]`;
   $('#creator-designation').textContent = characterDesignation(c);
   $$('.creator-number-option').forEach(button => {
     const selected = Number(button.dataset.number) === c.number;
@@ -359,7 +320,10 @@ function updateCreatorForm() {
     button.setAttribute('aria-checked', String(selected));
     button.tabIndex = selected ? 0 : -1;
   });
-  $$('[data-creator-kit]').forEach(input => { input.checked = Boolean(c.kit[input.dataset.creatorKit]); });
+  $$('[data-creator-kit]').forEach(input => {
+    input.checked = Boolean(c.kit[input.dataset.creatorKit]);
+    input.nextElementSibling.textContent = input.checked ? '[X]' : '[ ]';
+  });
   updateRestrictedFactorForms();
 }
 
@@ -393,69 +357,63 @@ function discordWebhookValidation(value) {
   } catch { return { empty: false, valid: false, url: raw }; }
 }
 
-function setHookStatus(kind, message, tone = 'idle') {
-  const status = $(`#${kind}-hook-status`);
-  const light = $(`#${kind}-hook-light`);
-  if (status) status.textContent = message;
-  if (light) {
-    light.className = `relay-light is-${tone}`;
-    light.innerHTML = '<i></i>';
-    light.append(document.createTextNode(tone === 'armed' ? ' armed' : tone === 'sending' ? ' sending' : tone === 'error' ? ' signal error' : ' local only'));
-  }
+function setHookStatus(message, tone = 'idle') {
+  $('#player-hook-status').textContent = message;
+  const light = $('#player-hook-light');
+  light.className = `relay-light is-${tone}`;
+  light.textContent = `STATUS> ${tone === 'armed' ? 'ARMED' : tone === 'sending' ? 'SENDING' : tone === 'error' ? 'SIGNAL ERROR' : 'LOCAL'}`;
 }
 
-function refreshHookStatus(kind) {
-  const key = kind === 'player' ? 'playerWebhook' : 'dmWebhook';
-  const check = discordWebhookValidation(state.discord[key]);
+function refreshHookStatus() {
+  const check = discordWebhookValidation(state.discord.playerWebhook);
   if (check.empty) {
-    setHookStatus(kind, kind === 'player' ? 'Paste a hook and this browser will announce your rolls.' : 'Paste a hook to post the current player briefing from this browser.');
+    setHookStatus('Paste a hook and this browser will announce your rolls.');
   } else if (check.valid) {
-    setHookStatus(kind, kind === 'player' ? 'Roll relay armed on this browser. The URL stays out of snapshots.' : 'Table relay armed on this browser. The URL stays out of snapshots.', 'armed');
+    setHookStatus('Roll relay armed on this browser. The URL remains local.', 'armed');
   } else {
-    setHookStatus(kind, 'That does not look like a Discord webhook URL.', 'error');
+    setHookStatus('That does not look like a Discord webhook URL.', 'error');
   }
 }
 
 function updateDiscordForm() {
   $('#player-webhook').value = state.discord.playerWebhook;
-  $('#dm-webhook').value = state.discord.dmWebhook;
-  refreshHookStatus('player');
-  refreshHookStatus('dm');
+  refreshHookStatus();
 }
 
-function saveWebhook(kind, value) {
-  const key = kind === 'player' ? 'playerWebhook' : 'dmWebhook';
-  state.discord[key] = String(value || '').trim();
+function saveWebhook(value) {
+  state.discord.playerWebhook = String(value || '').trim();
   save();
-  refreshHookStatus(kind);
+  refreshHookStatus();
 }
 
-function forgetWebhook(kind) {
-  const key = kind === 'player' ? 'playerWebhook' : 'dmWebhook';
-  state.discord[key] = '';
+function forgetWebhook() {
+  state.discord.playerWebhook = '';
   save();
-  $(`#${kind}-webhook`).value = '';
-  refreshHookStatus(kind);
+  $('#player-webhook').value = '';
+  refreshHookStatus();
   showToast('Webhook forgotten on this device. Friend Computer respects your discretion.');
 }
 
-function updateDMForm() {
+function updateGMTools() {
   const s = state.session;
-  $('#mission-phase').value = s.phase;
-  $('#dm-scene-title').value = s.title;
-  $('#dm-scene-copy').value = s.copy;
-  $('#dm-directive').value = s.directive;
-  $('#dm-risk').value = s.risk;
-  $('#dm-status-note').value = s.status;
-  $('#mission-roll-readout').textContent = s.missionRoll || 'MISSION TABLE READY // 10 FORMATS × 5 D25 SLOTS';
-  $('#dm-clock-label').value = s.clockLabel;
-  $('#dm-clock-value').textContent = s.clock;
-  $('#clock-ring').style.setProperty('--progress', `${(s.clock / 6) * 100}%`);
+  const mission = s.mission;
+  $('#mission-output-title').textContent = mission.title || 'NO MISSION GENERATED';
+  $('#mission-output-copy').textContent = mission.copy || 'Run MISSION.EXE to roll one format and five d25 tables.';
+  $('#mission-output-directive').textContent = mission.directive || '---';
+  $('#mission-output-threat').textContent = mission.threat || '---';
+  $('#mission-output-twist').textContent = mission.twist || '---';
+  $('#mission-roll-readout').textContent = mission.audit || 'STATUS> READY // 10 FORMATS x 5 D25 TABLES';
+  $('#copy-mission-output').disabled = !mission.title;
+  $('#gm-clock-label').value = s.clockLabel;
+  const meter = $('#clock-meter');
+  meter.textContent = `CLOCK> [${'#'.repeat(s.clock)}${'.'.repeat(6 - s.clock)}] ${s.clock}/6`;
+  meter.setAttribute('aria-label', `${s.clockLabel} ${s.clock} of 6`);
+  meter.setAttribute('aria-valuenow', String(s.clock));
   $('#clock-outcome').textContent = clockOutcome(s.clock);
   $('#incident-log').value = s.incidents;
   $('#incident-count').textContent = `${s.incidents.length} / 1400`;
   $('#secret-note').value = s.secrets[activeSecret] || '';
-  $('#secret-note-label').textContent = ['TWIST NOTE', 'NPC NOTE', 'EVIDENCE NOTE'][activeSecret];
+  $('#secret-note-label').textContent = ['TWIST.DAT', 'NPC.DAT', 'EVIDENCE.DAT'][activeSecret];
 }
 
 function clockOutcome(clock) {
@@ -487,6 +445,8 @@ function updateRollControls() {
   $('#style-bonus').classList.toggle('active', bonusStyle);
   $('#skill-bonus').setAttribute('aria-pressed', String(bonusSkill));
   $('#style-bonus').setAttribute('aria-pressed', String(bonusStyle));
+  $('#skill-bonus span').textContent = bonusSkill ? '[X]' : '[ ]';
+  $('#style-bonus span').textContent = bonusStyle ? '[X]' : '[ ]';
   return total;
 }
 
@@ -507,10 +467,9 @@ function setGameRollMode(mode) {
 }
 
 function renderAll() {
-  updatePlayerBrief();
   updateCharacterForm();
   updateCreatorForm();
-  updateDMForm();
+  updateGMTools();
   updateDiscordForm();
   updateRollControls();
   updateSpecialRolls();
@@ -518,6 +477,7 @@ function renderAll() {
 }
 
 function setMode(mode, shouldScroll = false) {
+  mode = mode === 'gm' ? 'gm' : 'player';
   state.mode = mode;
   save();
   const player = mode === 'player';
@@ -596,10 +556,12 @@ function rollRestrictedFactor(kind) {
 
 function updateSpecialRolls() {
   const special = state.special;
+  $('#rd-name').textContent = special.rdName;
+  $('#rd-description').textContent = special.rdDescription;
   $('#rd-safe-useful-number').value = String(special.rdNumber);
   $('#rd-number').textContent = special.rdNumber;
   const rdText = special.rdResult || 'Awaiting a one-die field test. No bonuses and no assistance.';
-  ['rd-special-result', 'dm-rd-roll-result'].forEach(id => {
+  ['rd-special-result', 'gm-rd-roll-result'].forEach(id => {
     const output = $(`#${id}`);
     output.textContent = rdText;
     output.className = `special-result is-${special.rdTone || 'idle'}`;
@@ -648,10 +610,9 @@ function mixDrugs() {
   showToast('Pharmaceutical interaction resolved. Medical supervision remains unavailable.');
 }
 
-function sessionInput(key, event) {
+function updateSessionField(key, event) {
   state.session[key] = event.target.value;
   save();
-  updatePlayerBrief();
 }
 
 function rollFlavor(type, successes, exact) {
@@ -676,13 +637,13 @@ function rollDice() {
   const complication = exact === 0 ? '' : exact === 1 ? 'One exact die: something goes wrong.' : exact === 2 ? 'Two exact dice: something goes very wrong.' : `${exact} exact dice: something goes horribly wrong.`;
   const flavor = rollFlavor(rollType, successes, exact);
   const report = { type: rollType, number, dice, total, successes, exact, outcome, complication, flavor, name: characterDesignation() };
-  const diceMarkup = dice.map(die => `<span class="die ${die === number ? 'exact' : isSuccess(die) ? 'success' : ''}">${die}</span>`).join('');
+  const diceMarkup = dice.map(die => `<span class="die ${die === number ? 'exact' : isSuccess(die) ? 'success' : ''}">[${die}]</span>`).join('');
   $('#roll-result').className = 'roll-result has-result';
   $('#roll-result').innerHTML = `
-    <div class="result-summary"><b>${successes} ${successes === 1 ? 'success' : 'successes'}</b><span>${escapeHTML(outcome)}</span></div>
+    <div class="result-summary"><b>RESULT&gt; ${successes} ${successes === 1 ? 'SUCCESS' : 'SUCCESSES'}</b><span>${escapeHTML(outcome)}</span></div>
     <div class="die-row" aria-label="Rolled dice">${diceMarkup}</div>
     <p class="result-note">${exact ? `<b>TREASONOUS LASER.</b> ${escapeHTML(complication)}` : 'No exact hits. Friend Computer approves this statistically ordinary behavior.'}</p>
-    <p class="result-flavor"><span>TERMINAL COMMENT</span>${escapeHTML(flavor)}</p>`;
+    <p class="result-flavor"><span>COMMENT&gt;</span>${escapeHTML(flavor)}</p>`;
   void announcePlayerRoll(report);
   return report;
 }
@@ -695,7 +656,7 @@ function discordEmbed(title, description, color, fields = []) {
       title: String(title).slice(0, 256),
       description: String(description).slice(0, 4096),
       color,
-      fields: fields.map(field => ({ name: String(field.name).slice(0, 256), value: String(field.value || '—').slice(0, 1024), inline: Boolean(field.inline) })),
+      fields: fields.map(field => ({ name: String(field.name).slice(0, 256), value: String(field.value || '---').slice(0, 1024), inline: Boolean(field.inline) })),
       footer: { text: 'ALPHA COMPLEX // FRIEND COMPUTER IS PLEASED' },
       timestamp: new Date().toISOString()
     }]
@@ -710,30 +671,14 @@ function rollDiscordPayload(report) {
     color,
     [
       { name: 'DICE', value: report.dice.map(die => `[${die}]`).join(' '), inline: true },
-      { name: 'RESULT', value: `${report.successes} ${report.successes === 1 ? 'success' : 'successes'} — ${report.outcome}`, inline: true },
+      { name: 'RESULT', value: `${report.successes} ${report.successes === 1 ? 'success' : 'successes'} // ${report.outcome}`, inline: true },
       { name: report.exact ? 'TREASONOUS LASER' : 'COMPUTER ASSESSMENT', value: report.exact ? report.complication : 'No abnormality detected. Carry on, citizen.' }
     ]
   );
 }
 
-function briefingDiscordPayload() {
-  const s = state.session;
-  return discordEmbed(
-    `MISSION UPDATE // ${s.phase.toUpperCase()}`,
-    s.copy,
-    0x4bd66a,
-    [
-      { name: 'DIRECTIVE', value: s.directive, inline: true },
-      { name: 'IMMEDIATE RISK', value: s.risk, inline: true },
-      { name: `${s.clockLabel.toUpperCase()} CLOCK`, value: `${s.clock} / 6`, inline: true },
-      { name: 'FRIENDLY REMINDER', value: s.status }
-    ]
-  );
-}
-
-async function postDiscordWebhook(kind, payload) {
-  const key = kind === 'player' ? 'playerWebhook' : 'dmWebhook';
-  const check = discordWebhookValidation(state.discord[key]);
+async function postDiscordWebhook(payload) {
+  const check = discordWebhookValidation(state.discord.playerWebhook);
   if (!check.valid) throw new Error(check.empty ? 'No webhook pasted.' : 'Invalid Discord webhook URL.');
   const response = await fetch(check.url, {
     method: 'POST',
@@ -743,78 +688,34 @@ async function postDiscordWebhook(kind, payload) {
   if (!response.ok) throw new Error(`Discord returned ${response.status}.`);
 }
 
-async function testDiscordWebhook(kind) {
-  const key = kind === 'player' ? 'playerWebhook' : 'dmWebhook';
-  const check = discordWebhookValidation(state.discord[key]);
+async function testDiscordWebhook() {
+  const check = discordWebhookValidation(state.discord.playerWebhook);
   if (!check.valid) {
-    refreshHookStatus(kind);
+    refreshHookStatus();
     showToast(check.empty ? 'Paste a Discord webhook first.' : 'That webhook URL is not valid.');
     return;
   }
-  setHookStatus(kind, 'Opening a secure-ish channel to Friend Computer…', 'sending');
+  setHookStatus('Opening a secure-ish channel to Friend Computer...', 'sending');
   try {
-    await postDiscordWebhook(kind, discordEmbed('RELAY TEST // CONNECTION ACCEPTED', 'This webhook has been configured by a loyal citizen. Friend Computer appreciates the initiative.', 0x4bd66a));
-    setHookStatus(kind, 'Signal received. Friend Computer is listening.', 'armed');
+    await postDiscordWebhook(discordEmbed('RELAY TEST // CONNECTION ACCEPTED', 'This webhook has been configured by a loyal citizen. Friend Computer appreciates the initiative.', 0x4bd66a));
+    setHookStatus('Signal received. Friend Computer is listening.', 'armed');
     showToast('Discord relay test delivered.');
   } catch (error) {
-    setHookStatus(kind, `${error.message} Check the webhook and try again.`, 'error');
+    setHookStatus(`${error.message} Check the webhook and try again.`, 'error');
     showToast('Discord could not receive the test.');
   }
 }
 
 async function announcePlayerRoll(report) {
   if (!discordWebhookValidation(state.discord.playerWebhook).valid) return;
-  setHookStatus('player', 'Filing your roll with Friend Computer…', 'sending');
+  setHookStatus('Filing your roll with Friend Computer...', 'sending');
   try {
-    await postDiscordWebhook('player', rollDiscordPayload(report));
-    setHookStatus('player', 'Roll delivered. Friend Computer has noticed.', 'armed');
+    await postDiscordWebhook(rollDiscordPayload(report));
+    setHookStatus('Roll delivered. Friend Computer has noticed.', 'armed');
   } catch (error) {
-    setHookStatus('player', `${error.message} Your roll still exists locally.`, 'error');
+    setHookStatus(`${error.message} Your roll still exists locally.`, 'error');
     showToast('Roll recorded here; Discord delivery failed.');
   }
-}
-
-async function postBriefingToDiscord() {
-  const check = discordWebhookValidation(state.discord.dmWebhook);
-  if (!check.valid) {
-    refreshHookStatus('dm');
-    showToast(check.empty ? 'Paste a Discord webhook first.' : 'That webhook URL is not valid.');
-    return;
-  }
-  setHookStatus('dm', 'Broadcasting current briefing…', 'sending');
-  try {
-    await postDiscordWebhook('dm', briefingDiscordPayload());
-    setHookStatus('dm', 'Briefing delivered. The table has been informed.', 'armed');
-    showToast('Current briefing posted to Discord.');
-  } catch (error) {
-    setHookStatus('dm', `${error.message} Check the webhook and try again.`, 'error');
-    showToast('Discord could not receive the briefing.');
-  }
-}
-
-function makeBriefPayload() {
-  const { phase, title, copy, directive, risk, status, clock, clockLabel } = state.session;
-  return { phase, title, copy, directive, risk, status, clock, clockLabel, snapshotAt: new Date().toISOString() };
-}
-
-function toBase64(value) {
-  const bytes = new TextEncoder().encode(JSON.stringify(value));
-  let binary = '';
-  bytes.forEach(byte => { binary += String.fromCharCode(byte); });
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function fromBase64(value) {
-  const base = value.replace(/-/g, '+').replace(/_/g, '/');
-  const pad = base + '='.repeat((4 - base.length % 4) % 4);
-  const binary = atob(pad);
-  const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
-  return JSON.parse(new TextDecoder().decode(bytes));
-}
-
-function snapshotLink(payload = makeBriefPayload()) {
-  const base = `${window.location.origin}${window.location.pathname}`;
-  return `${base}#brief=${toBase64(payload)}`;
 }
 
 async function copyText(text, successMessage) {
@@ -831,42 +732,15 @@ async function copyText(text, successMessage) {
     input.select();
     const copied = document.execCommand('copy');
     input.remove();
-    showToast(copied ? successMessage : 'Copy failed — select the briefing details manually.');
+    showToast(copied ? successMessage : 'Copy failed. Select the output manually.');
   }
 }
 
-function copySnapshot() {
-  const payload = makeBriefPayload();
-  state.session.snapshotAt = payload.snapshotAt;
-  save();
-  updatePlayerBrief();
-  return copyText(snapshotLink(payload), 'Player snapshot copied — drop it in your group chat.');
-}
-
-function copyMissionBrief() {
-  const s = state.session;
-  const text = `LASERS & TREASON // ${s.phase.toUpperCase()}\n${s.title}\n\n${s.copy}\n\nDIRECTIVE: ${s.directive}\nRISK: ${s.risk}\n${s.clockLabel.toUpperCase()}: ${s.clock}/6\n\n${s.status}`;
-  return copyText(text, 'Mission brief copied.');
-}
-
-function readBriefHash() {
-  const match = window.location.hash.match(/^#brief=([A-Za-z0-9_-]+)$/);
-  if (!match) return false;
-  try {
-    const brief = fromBase64(match[1]);
-    if (!brief || typeof brief !== 'object' || Array.isArray(brief)) return false;
-    if (typeof brief.phase === 'string' && missionPhases.includes(brief.phase)) state.session.phase = brief.phase;
-    const textFields = { title: 76, copy: 420, directive: 50, risk: 50, status: 150, clockLabel: 38 };
-    Object.entries(textFields).forEach(([key, limit]) => {
-      if (typeof brief[key] === 'string') state.session[key] = brief[key].slice(0, limit);
-    });
-    const clock = typeof brief.clock === 'number' ? brief.clock : typeof brief.clock === 'string' && /^\d+$/.test(brief.clock) ? Number(brief.clock) : Number.NaN;
-    if (Number.isFinite(clock)) state.session.clock = Math.max(0, Math.min(6, Math.round(clock)));
-    if (typeof brief.snapshotAt === 'string' && !Number.isNaN(new Date(brief.snapshotAt).getTime())) state.session.snapshotAt = brief.snapshotAt;
-    save();
-    history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-    return true;
-  } catch { return false; }
+function copyMissionOutput() {
+  const mission = state.session.mission;
+  if (!mission.title) return;
+  const text = `MISSION.EXE // GENERATED OUTPUT\n\n${mission.title}\n${mission.copy}\n\nACTION> ${mission.directive}\nTHREAT> ${mission.threat}\nTWIST> ${mission.twist}\n\n${mission.audit}`;
+  return copyText(text, 'Mission generator output copied.');
 }
 
 function choose(array) { return array[Math.floor(Math.random() * array.length)]; }
@@ -900,9 +774,9 @@ function showCreatorStep(step) {
   $('#creator-kicker').textContent = current.kicker;
   $('#creator-title').textContent = current.title;
   $('#creator-description').textContent = current.description;
-  $('#creator-progress-bar').style.width = `${(creationStep / creationSteps.length) * 100}%`;
+  $('#creator-progress-bar').textContent = `[${'#'.repeat(creationStep)}${'.'.repeat(creationSteps.length - creationStep)}]`;
   $('#creator-back').disabled = creationStep === 1;
-  $('#creator-next').innerHTML = creationStep === creationSteps.length ? 'Complete record <span aria-hidden="true">✓</span>' : `${current.next} <span aria-hidden="true">→</span>`;
+  $('#creator-next').textContent = creationStep === creationSteps.length ? '[COMPLETE RECORD]' : `[NEXT> ${current.next.toUpperCase()}]`;
   $('#creator-error').hidden = true;
 }
 
@@ -985,16 +859,15 @@ function bootApplication() {
     appShell.inert = false;
     window.setTimeout(() => {
       screen.hidden = true;
-      $('#player-mode-button').focus();
-      window.dispatchEvent(new Event('friend-computer:ready'));
+      $('.mode-button.active').focus();
     }, prefersReducedMotion() ? 0 : 260);
   };
   if (prefersReducedMotion()) {
     lines.forEach(line => line.classList.add('is-visible'));
     prepare();
   } else {
+    prepare();
     lines.forEach((line, index) => timers.push(window.setTimeout(() => line.classList.add('is-visible'), 180 + index * 245)));
-    timers.push(window.setTimeout(prepare, 1260));
   }
   acknowledge.addEventListener('click', finish);
   window.addEventListener('keydown', event => {
@@ -1017,24 +890,25 @@ function rollMission() {
   });
   const result = missionTemplates[templateRoll](slots);
   const capitalize = value => value.charAt(0).toUpperCase() + value.slice(1);
-  state.session.title = capitalize(result.title).slice(0, 76);
-  state.session.copy = result.copy.slice(0, 420);
-  state.session.directive = `${slots.action} ${slots.objective}`.slice(0, 50);
-  state.session.risk = capitalize(slots.threat).slice(0, 50);
-  state.session.status = `${capitalize(slots.complication)}. Friend Computer expects a tidy resolution.`.slice(0, 150);
-  state.session.missionRoll = `FORMAT ${String(templateRoll + 1).padStart(2, '0')} // ACTION ${String(slotRolls.action).padStart(2, '0')} · OBJECT ${String(slotRolls.objective).padStart(2, '0')} · LOCATION ${String(slotRolls.location).padStart(2, '0')} · THREAT ${String(slotRolls.threat).padStart(2, '0')} · TWIST ${String(slotRolls.complication).padStart(2, '0')}`;
+  state.session.mission = {
+    title: capitalize(result.title).slice(0, 76),
+    copy: result.copy.slice(0, 420),
+    directive: `${slots.action} ${slots.objective}`.slice(0, 80),
+    threat: capitalize(slots.threat).slice(0, 80),
+    twist: capitalize(slots.complication).slice(0, 120),
+    audit: `FORMAT=${String(templateRoll + 1).padStart(2, '0')} // ACTION=${String(slotRolls.action).padStart(2, '0')} // OBJECT=${String(slotRolls.objective).padStart(2, '0')} // LOCATION=${String(slotRolls.location).padStart(2, '0')} // THREAT=${String(slotRolls.threat).padStart(2, '0')} // TWIST=${String(slotRolls.complication).padStart(2, '0')}`
+  };
   save();
-  updateDMForm();
-  updatePlayerBrief();
-  showToast('Fresh mission broadcast generated. Editing remains compulsory and permitted.');
+  updateGMTools();
+  showToast('MISSION.EXE returned one operational disaster.');
 }
 
 function generateRD() {
   const name = `${choose(rdWords.first)} ${choose(rdWords.second)} ${choose(rdWords.third)}`;
   const description = choose(rdWords.use);
   const number = Math.floor(Math.random() * 4) + 2;
-  $('#rd-name').textContent = name;
-  $('#rd-description').textContent = description;
+  state.special.rdName = name;
+  state.special.rdDescription = description;
   state.special.rdNumber = number;
   state.special.rdResult = '';
   state.special.rdTone = 'idle';
@@ -1057,7 +931,6 @@ function bindEvents() {
   $('#roll-mutant-power').addEventListener('click', () => rollRestrictedFactor('power'));
   $('#copy-designation').addEventListener('click', () => copyText(characterDesignation(), 'Designation copied for official use.'));
   $('#open-creator').addEventListener('click', openCreator);
-  $('#make-troubleshooter').addEventListener('click', openCreator);
   $('#field-log-input').addEventListener('input', event => {
     characterInput('log', event);
     $('#log-count').textContent = `${event.target.value.length} / 1400`;
@@ -1070,7 +943,11 @@ function bindEvents() {
     state.character.number = Number(button.dataset.number); save(); updateCharacterForm();
   }));
   bindRadioKeyboard('.number-option', button => { state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); });
-  $$('[data-kit]').forEach(input => input.addEventListener('change', event => { state.character.kit[event.target.dataset.kit] = event.target.checked; save(); }));
+  $$('[data-kit]').forEach(input => input.addEventListener('change', event => {
+    state.character.kit[event.target.dataset.kit] = event.target.checked;
+    event.target.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
+    save();
+  }));
 
   $('#creator-clearance').addEventListener('change', event => chooseClearance(event, 'creator'));
   $('#creator-service').addEventListener('change', event => { setCharacterField('service', event.target.value); updateCharacterForm(); });
@@ -1086,8 +963,12 @@ function bindEvents() {
   bindRadioKeyboard('.creator-number-option', button => { state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); updateCreatorForm(); });
   $$('[data-creator-kit]').forEach(input => input.addEventListener('change', event => {
     state.character.kit[event.target.dataset.creatorKit] = event.target.checked;
+    event.target.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
     save();
-    $$(`[data-kit="${event.target.dataset.creatorKit}"]`).forEach(mainInput => { mainInput.checked = event.target.checked; });
+    $$(`[data-kit="${event.target.dataset.creatorKit}"]`).forEach(mainInput => {
+      mainInput.checked = event.target.checked;
+      mainInput.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
+    });
   }));
   $('#creator-back').addEventListener('click', () => showCreatorStep(creationStep - 1));
   $('#creator-next').addEventListener('click', advanceCreator);
@@ -1106,61 +987,45 @@ function bindEvents() {
   $('#rd-safe-useful-number').addEventListener('change', event => setRDNumber(event.target.value));
   $('#roll-rd-item').addEventListener('click', rollRDItem);
   $('#roll-drug-interaction').addEventListener('click', mixDrugs);
-  $('#copy-player-brief').addEventListener('click', copyMissionBrief);
-  $('#player-webhook').addEventListener('input', event => saveWebhook('player', event.target.value));
-  $('#test-player-webhook').addEventListener('click', () => testDiscordWebhook('player'));
-  $('#clear-player-webhook').addEventListener('click', () => forgetWebhook('player'));
+  $('#player-webhook').addEventListener('input', event => saveWebhook(event.target.value));
+  $('#test-player-webhook').addEventListener('click', testDiscordWebhook);
+  $('#clear-player-webhook').addEventListener('click', forgetWebhook);
 
-  $('#mission-phase').addEventListener('change', event => sessionInput('phase', event));
   $('#roll-mission').addEventListener('click', rollMission);
-  $('#dm-scene-title').addEventListener('input', event => sessionInput('title', event));
-  $('#dm-scene-copy').addEventListener('input', event => sessionInput('copy', event));
-  $('#dm-directive').addEventListener('input', event => sessionInput('directive', event));
-  $('#dm-risk').addEventListener('input', event => sessionInput('risk', event));
-  $('#dm-status-note').addEventListener('input', event => sessionInput('status', event));
-  $('#dm-clock-label').addEventListener('input', event => sessionInput('clockLabel', event));
+  $('#copy-mission-output').addEventListener('click', copyMissionOutput);
+  $('#gm-clock-label').addEventListener('input', event => {
+    updateSessionField('clockLabel', event);
+    $('#clock-meter').setAttribute('aria-label', `${state.session.clockLabel || 'Clock'} ${state.session.clock} of 6`);
+  });
   $('#clock-up').addEventListener('click', () => { state.session.clock = Math.min(6, state.session.clock + 1); save(); renderAll(); });
   $('#clock-down').addEventListener('click', () => { state.session.clock = Math.max(0, state.session.clock - 1); save(); renderAll(); });
   $('#reset-clock').addEventListener('click', () => { state.session.clock = 0; save(); renderAll(); showToast('Compliance clock reset. Suspiciously forgiving.'); });
-  $('#share-brief').addEventListener('click', copySnapshot);
-  $('#open-player-preview').addEventListener('click', () => setMode('player', true));
-  $('#dm-webhook').addEventListener('input', event => saveWebhook('dm', event.target.value));
-  $('#test-dm-webhook').addEventListener('click', () => testDiscordWebhook('dm'));
-  $('#post-briefing').addEventListener('click', postBriefingToDiscord);
-  $('#clear-dm-webhook').addEventListener('click', () => forgetWebhook('dm'));
 
   $('#generate-spark').addEventListener('click', generateSpark);
   $('#copy-spark').addEventListener('click', () => copyText($('#spark-display p').textContent, 'Complication copied.'));
   $('#add-spark-log').addEventListener('click', () => {
     const line = `[COMPLICATION] ${$('#spark-display p').textContent}`;
     state.session.incidents = state.session.incidents ? `${state.session.incidents}\n${line}` : line;
-    save(); updateDMForm(); showToast('Added to the incident log.');
+    save(); updateGMTools(); showToast('Added to the incident log.');
   });
   $('#generate-rd').addEventListener('click', generateRD);
-  $('#roll-rd-dm').addEventListener('click', rollRDItem);
+  $('#roll-rd-gm').addEventListener('click', rollRDItem);
   $$('.secret-tab').forEach(button => button.addEventListener('click', () => {
     activeSecret = Number(button.dataset.secret);
     $$('.secret-tab').forEach(tab => { const selected = Number(tab.dataset.secret) === activeSecret; tab.classList.toggle('active', selected); tab.setAttribute('aria-pressed', String(selected)); });
-    updateDMForm();
+    updateGMTools();
   }));
   $('#secret-note').addEventListener('input', event => { state.session.secrets[activeSecret] = event.target.value; save(); });
   $('#incident-log').addEventListener('input', event => { state.session.incidents = event.target.value; save(); $('#incident-count').textContent = `${event.target.value.length} / 1400`; });
-  $('#clear-incidents').addEventListener('click', () => { if (!state.session.incidents) return; state.session.incidents = ''; save(); updateDMForm(); showToast('Incident log cleared. An unusual lack of accountability.'); });
-  $('#random-tone').addEventListener('click', () => { $('.dm-cue-card p').textContent = choose(tones); });
+  $('#clear-incidents').addEventListener('click', () => { if (!state.session.incidents) return; state.session.incidents = ''; save(); updateGMTools(); showToast('Incident log cleared. An unusual lack of accountability.'); });
 
-  const dialog = $('#help-dialog');
-  $('#sharing-help').addEventListener('click', () => dialog.showModal());
-  $('#close-help').addEventListener('click', () => dialog.close());
-  $('#dialog-copy-brief').addEventListener('click', () => copySnapshot());
-  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  window.addEventListener('keydown', event => {
+    if (event.key === 'F1') { event.preventDefault(); setMode('player', true); }
+    if (event.key === 'F2') { event.preventDefault(); setMode('gm', true); }
+  });
 }
 
-const importedBrief = readBriefHash();
 renderAll();
 bindEvents();
 setMode(state.mode);
-if (importedBrief) {
-  setMode('player');
-  window.addEventListener('friend-computer:ready', () => showToast('Shared player briefing loaded.'), { once: true });
-}
 bootApplication();

@@ -1,29 +1,35 @@
-# Lasers & Treason — Mission Control
+# Lasers & Treason // FCOS Toolbox
 
-A dependency-free, no-VTT companion for a shared **Lasers and Treason** one-shot. It is intentionally a static site so it can be published directly with GitHub Pages.
+A dependency-free, no-VTT toolbox for a shared **Lasers and Treason** one-shot. It is a static site that can be published directly with GitHub Pages.
 
-## What it includes
+## Tool consoles
 
-- Player Mode: a locally saved Troubleshooter record, roll helper, kit checklist, field log, and concise rules reference.
-- A guided seven-step Troubleshooter creation protocol following the supplied handout, with dice-assigned Secret Society and Mutant Power tables rather than free-entry fields.
-- Operational equipment tables for one-die R&amp;D Safe/Useful tests and two-axis pharmaceutical interaction rolls.
-- DM Mode: editable player-facing briefing, a mission roller with 10 formats and five 25-entry slot tables, mission phase, pressure clock, secret notes, incident log, complication prompts, and R&D item generator.
-- Shareable player snapshots: the DM can copy a link containing the current briefing and clock and paste it into the group chat. No sign-in, server, or VTT required.
-- Default-dark, DOS-style terminal presentation that stays legible on phones.
-- Optional Discord relay: players can paste a webhook to announce their own characterful rolls; the DM can paste a separate hook to post the current briefing.
+Player console:
 
-Characters and notes are stored in each participant's browser. A briefing snapshot only shares the current mission information—not anyone's private notes. It is a point-in-time handoff: after the DM changes the scene or clock, they should send a new link.
+- `CITIZEN.DAT`: locally saved Troubleshooter record and seven-step setup utility.
+- `ROLL.EXE`: action, R&D Safe/Useful, and pharmaceutical interaction rollers.
+- `KIT.CHK`, `NOTES.TXT`, and `RULES.HLP`: equipment, field notes, and a compact rules reference.
+- `RELAY.COM`: an optional player-owned Discord webhook that announces that player's rolls.
 
-DM notes are deliberately not included in the static site’s shared briefing links. For table secrecy, keep the DM console on a device the players cannot browse.
+GM console:
+
+- `MISSION.EXE`: a mission generator built from 10 formats and five 25-entry tables.
+- `CLOCK.EXE`: a six-step ASCII pressure tracker.
+- `TROUBLE.EXE` and `RNDLAB.EXE`: complication and experimental item generators.
+- `SECRETS.TXT` and `INCIDENT.LOG`: private local notes and table incidents.
+
+The interface uses literal ASCII directories, file names, status lines, checkboxes, dice, and meters. CSS only supplies the terminal palette and responsive layout.
+
+Characters, settings, clocks, and notes are stored in the current browser. There are no accounts or server-side data. Keep the GM console on a device players cannot inspect.
 
 ## Discord webhook notes
 
-Webhook URLs are stored only in the browser where they are pasted and are never included in player snapshots. A player hook posts that player’s rolls; a DM hook posts the current briefing when requested. A webhook URL is still a secret: on a static GitHub Pages site, do not paste one into a browser or device you do not trust.
+The optional player webhook is stored only in that browser. It is never placed in a link or sent anywhere except Discord when the player rolls or runs the connection test. A webhook URL is still a secret, so do not paste one into an untrusted browser or device.
 
 ## Publish to GitHub Pages
 
 1. Push these files to the branch you want to publish.
-2. In the GitHub repository, open **Settings → Pages**.
+2. In the GitHub repository, open **Settings > Pages**.
 3. Choose **Deploy from a branch**, select the branch, and choose the repository root (`/`).
 4. Save. GitHub will provide the public URL in the Pages settings.
 
