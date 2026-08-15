@@ -1,6 +1,6 @@
 # Lasers & Treason // FCOS Toolbox
 
-A dependency-free, no-VTT toolbox for a shared **Lasers and Treason** one-shot. It is a static site that can be published directly with GitHub Pages.
+A no-build, no-VTT toolbox for a shared **Lasers and Treason** one-shot. It is a static site that can be published directly with GitHub Pages.
 
 ## Tool consoles
 
@@ -18,7 +18,7 @@ GM console:
 - `TROUBLE.EXE` and `RNDLAB.EXE`: complication and experimental item generators.
 - `SECRETS.TXT` and `INCIDENT.LOG`: private local notes and table incidents.
 
-The interface is a single-column terminal transcript. Directories, tool boundaries, selected states, checkboxes, dice results, and meters are literal ASCII in the HTML or JavaScript. The small stylesheet only supplies the fixed-width palette, usable form controls, focus states, and modal visibility.
+The interface uses literal ASCII directories, tool boundaries, selected states, checkboxes, dice results, and meters. VT323 (loaded through Google Fonts), responsive multi-column tool bays, scanlines, phosphor glow, and a CRT vignette give the toolbox an old NFO-viewer feel while retaining a single-column mobile fallback.
 
 Characters, settings, clocks, and notes are stored in the current browser. There are no accounts or server-side data. Keep the GM console on a device players cannot inspect.
 
