@@ -239,6 +239,8 @@ let bonusStyle = false;
 let activeSecret = 0;
 let creationStep = 1;
 let toastTimer;
+let appBooted = false;
+let asciiObserver;
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
@@ -551,7 +553,36 @@ function setMode(mode, shouldScroll = false) {
     button.tabIndex = active ? 0 : -1;
     setAsciiState(button, active);
   });
+  if (appBooted) startAsciiTyping(player ? $('#player-view') : $('#gm-view'));
   if (shouldScroll) window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
+
+function startAsciiTyping(view) {
+  asciiObserver?.disconnect();
+  const directory = $('.ascii-directory', view);
+  const rails = $$('.ascii-tool-frame, .ascii-tool-end', view);
+  [directory, ...rails].filter(Boolean).forEach(target => {
+    target.classList.remove('ascii-type-target', 'ascii-awaiting');
+    target.style.removeProperty('--type-delay');
+  });
+  if (prefersReducedMotion()) return;
+  if (directory) {
+    void directory.offsetWidth;
+    directory.classList.add('ascii-type-target');
+  }
+  rails.forEach(target => target.classList.add('ascii-awaiting'));
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const target = entry.target;
+      target.style.setProperty('--type-delay', target.classList.contains('ascii-tool-end') ? '110ms' : '0ms');
+      target.classList.remove('ascii-awaiting');
+      target.classList.add('ascii-type-target');
+      observer.unobserve(target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+  asciiObserver = observer;
+  rails.forEach(target => observer.observe(target));
 }
 
 function setCharacterField(key, value) {
@@ -926,6 +957,8 @@ function bootApplication() {
     appShell.inert = false;
     window.setTimeout(() => {
       screen.hidden = true;
+      appBooted = true;
+      startAsciiTyping(state.mode === 'gm' ? $('#gm-view') : $('#player-view'));
       $('.mode-button.active').focus();
     }, prefersReducedMotion() ? 0 : 260);
   };

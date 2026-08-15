@@ -18,7 +18,7 @@ GM console:
 - `TROUBLE.EXE` and `RNDLAB.EXE`: complication and experimental item generators.
 - `SECRETS.TXT` and `INCIDENT.LOG`: private local notes and table incidents.
 
-The interface uses literal ASCII directories, full-width tool boundaries, selected states, checkboxes, dice results, and meters. VT323 (loaded through Google Fonts), a sticky desktop Player directory rail, responsive GM tool bays, scanlines, phosphor glow, and a CRT vignette give the toolbox an old NFO-viewer feel while retaining a single-column mobile fallback.
+The interface uses literal ASCII directories, full-width tool boundaries, selected states, checkboxes, dice results, and meters. VT323 (loaded through Google Fonts), matching sticky Player/GM link bars, stepped ASCII typing reveals, responsive tool bays, scanlines, phosphor glow, and a CRT vignette give the toolbox an old NFO-viewer feel while retaining a single-column mobile fallback.
 
 Characters, settings, clocks, and notes are stored in the current browser. There are no accounts or server-side data. Keep the GM console on a device players cannot inspect.
 
