@@ -320,12 +320,18 @@
                   <h2>STANDARD ISSUE</h2>
                 </div>
               </div>
-              <div class="kit-list">
-                <label><input type="checkbox" data-kit="laser" checked /><span class="custom-check">[X]</span><span><b>Laser pistol</b><small>2 red barrels // 6 shots each</small></span></label>
-                <label><input type="checkbox" data-kit="armor" checked /><span class="custom-check">[X]</span><span><b>RED reflec armor</b><small>Reflects very red lasers</small></span></label>
-                <label><input type="checkbox" data-kit="pdc" checked /><span class="custom-check">[X]</span><span><b>Personal Digital Companion</b><small>Friend Computer is listening</small></span></label>
-                <label><input type="checkbox" data-kit="credit" checked /><span class="custom-check">[X]</span><span><b>100 credits</b><small>For official necessities</small></span></label>
-              </div>
+              <div class="kit-list" id="inventory-list"></div>
+              <form class="inventory-add" id="inventory-add-form">
+                <div class="form-field">
+                  <label for="inventory-new-name">ITEM_NAME&gt;</label>
+                  <input id="inventory-new-name" maxlength="60" autocomplete="off" placeholder="Experimental mop" required />
+                </div>
+                <div class="form-field">
+                  <label for="inventory-new-details">NOTES&gt;</label>
+                  <input id="inventory-new-details" maxlength="100" autocomplete="off" placeholder="Optional condition, charges, or warning" />
+                </div>
+                <button type="submit">[ADD ITEM]</button>
+              </form>
               <div class="ascii-tool-end" aria-hidden="true">+--[ EOF ]</div>
             </article>
 

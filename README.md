@@ -8,7 +8,7 @@ Player console:
 
 - `CITIZEN.DAT`: locally saved Troubleshooter record and seven-step setup utility.
 - `ROLL.EXE`: action, R&D Safe/Useful, and pharmaceutical interaction rollers.
-- `KIT.CHK`, `NOTES.TXT`, and `RULES.HLP`: equipment, field notes, and a compact rules reference.
+- `KIT.CHK`, `NOTES.TXT`, and `RULES.HLP`: editable equipment inventory, field notes, and a compact rules reference.
 - `RELAY.COM`: an optional player-owned Discord webhook that announces that player's rolls.
 
 GM console:

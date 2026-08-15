@@ -271,11 +271,19 @@ a { color: var(--hi); }
 .special-result.is-useful { color: var(--hi); }
 .special-control { display: grid; grid-template-columns: auto 90px minmax(160px, 1fr); gap: 8px; align-items: end; }
 
-.kit-list label, .creator-kit-grid label { display: flex; gap: 1ch; margin: 10px 0; cursor: pointer; }
-.kit-list input, .creator-kit-grid input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.creator-kit-grid label { display: flex; gap: 1ch; margin: 10px 0; cursor: pointer; }
+.kit-list input[type="checkbox"], .creator-kit-grid input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .custom-check { flex: 0 0 3ch; color: var(--hi); }
-.kit-list small, .creator-kit-grid small { display: block; color: var(--dim); }
-.kit-list input:focus-visible + .custom-check, .creator-kit-grid input:focus-visible + .custom-check { outline: 2px solid var(--hi); }
+.creator-kit-grid small { display: block; color: var(--dim); }
+.kit-list input[type="checkbox"]:focus-visible + .custom-check, .creator-kit-grid input:focus-visible + .custom-check { outline: 2px solid var(--hi); }
+.inventory-item { display: grid; grid-template-columns: 3ch minmax(0, 1fr) auto; gap: 1ch; align-items: center; margin: 10px 0; }
+.inventory-toggle { align-self: stretch; display: flex; align-items: center; cursor: pointer; }
+.inventory-fields { display: grid; grid-template-columns: minmax(120px, .7fr) minmax(160px, 1.3fr); gap: 8px; }
+.inventory-fields label { margin: 0; }
+.inventory-detail { color: var(--dim); }
+.inventory-remove { min-width: 3ch; padding-inline: .35rem; color: var(--bad); }
+.inventory-add { display: grid; grid-template-columns: minmax(140px, .8fr) minmax(180px, 1.2fr) auto; gap: 8px; align-items: end; margin-top: 18px; padding-top: 12px; border-top: 1px dashed var(--line); }
+.inventory-empty { color: var(--dim); }
 .relay-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
 .log-footer, .secret-footer { display: flex; justify-content: space-between; gap: 10px; color: var(--dim); }
 
@@ -369,7 +377,7 @@ footer span { display: block; }
   .panel-heading { display: block; }
   .panel-heading-actions, .relay-heading-actions { margin-top: 8px; }
   .character-topline, .details-row, .restricted-roll-grid, .creator-optional-grid,
-  .creator-kit-grid, .roll-type-toggle, .dice-controls, .special-control,
+  .creator-kit-grid, .roll-type-toggle, .dice-controls, .special-control, .inventory-fields, .inventory-add,
   .relay-row, .creator-identity-grid, .designation-readout, .creator-designation-preview {
     grid-template-columns: minmax(0, 1fr);
   }

@@ -57,11 +57,19 @@ const drugInteractionTable = [
   ['Your left elbow itches slightly. Scratching it solves the problem.', 'You collapse screaming, frothing and seizing briefly before you die.']
 ];
 
+const standardInventory = [
+  { id: 'laser', name: 'Laser pistol', details: '2 red barrels // 6 shots each', checked: true },
+  { id: 'armor', name: 'RED reflec armor', details: 'Reflects very red lasers', checked: true },
+  { id: 'pdc', name: 'Personal Digital Companion', details: 'Friend Computer is listening', checked: true },
+  { id: 'credit', name: '100 credits', details: 'For official necessities', checked: true }
+];
+
 const defaultState = {
   mode: 'player',
   character: {
     name: '', nameRoot: '', clearance: 'RED', homeSector: '', clone: '1', service: '', number: 3, goal: '', society: '', societyRoll: '', power: '', powerRoll: '',
     kit: { laser: true, armor: true, pdc: true, credit: true },
+    inventory: standardInventory.map(item => ({ ...item })),
     log: ''
   },
   discord: { playerWebhook: '' },
@@ -184,13 +192,28 @@ const rdWords = {
 };
 
 function clone(value) { return JSON.parse(JSON.stringify(value)); }
+function cleanInventory(items) {
+  return items.slice(0, 40).map((item, index) => ({
+    id: String(item?.id || `item-${index}`).replace(/[^a-z0-9_-]/gi, '').slice(0, 48) || `item-${index}`,
+    name: String(item?.name || 'UNNAMED ITEM').slice(0, 60),
+    details: String(item?.details || '').slice(0, 100),
+    checked: Boolean(item?.checked)
+  })).filter((item, index, all) => all.findIndex(candidate => candidate.id === item.id) === index);
+}
+
 function loadState() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!stored) return clone(defaultState);
+    const characterDefaults = clone(defaultState).character;
+    const storedCharacter = stored.character || {};
+    const legacyKit = { ...characterDefaults.kit, ...(storedCharacter.kit || {}) };
+    const inventory = Array.isArray(storedCharacter.inventory)
+      ? cleanInventory(storedCharacter.inventory)
+      : standardInventory.map(item => ({ ...item, checked: Boolean(legacyKit[item.id]) }));
     const loaded = {
       ...clone(defaultState), ...stored,
-      character: { ...clone(defaultState).character, ...(stored.character || {}), kit: { ...clone(defaultState).character.kit, ...(stored.character?.kit || {}) } },
+      character: { ...characterDefaults, ...storedCharacter, kit: legacyKit, inventory },
       discord: { playerWebhook: String(stored.discord?.playerWebhook || '') },
       special: { ...clone(defaultState).special, ...(stored.special || {}) },
       session: {
@@ -264,6 +287,9 @@ function migrateCharacter(character) {
   character.powerRoll = String(character.powerRoll || '');
   if (!secretSocietyTable.flat().some(entry => entry.name === character.society)) character.society = '';
   if (!mutantPowerTable.flat().includes(character.power)) character.power = '';
+  standardInventory.forEach(item => {
+    character.kit[item.id] = Boolean(character.inventory.find(entry => entry.id === item.id)?.checked);
+  });
 }
 
 function characterDesignation(character = state.character) {
@@ -303,11 +329,35 @@ function updateCharacterForm() {
   });
   $('#number-output').textContent = `[${c.number}]`;
   $('#roll-number-reference').textContent = c.number;
-  $$('[data-kit]').forEach(input => {
-    input.checked = Boolean(c.kit[input.dataset.kit]);
-    input.nextElementSibling.textContent = input.checked ? '[X]' : '[ ]';
-  });
+  renderInventory();
   updateRestrictedFactorForms();
+}
+
+function renderInventory() {
+  const list = $('#inventory-list');
+  if (!state.character.inventory.length) {
+    list.innerHTML = '<p class="inventory-empty">[EMPTY] Friend Computer has noted your lack of equipment.</p>';
+    return;
+  }
+  list.innerHTML = state.character.inventory.map(item => {
+    const id = escapeHTML(item.id);
+    return `<div class="inventory-item">
+      <label class="inventory-toggle"><input type="checkbox" data-inventory-check="${id}" ${item.checked ? 'checked' : ''} /><span class="custom-check">${item.checked ? '[X]' : '[ ]'}</span><span class="sr-only">Packed</span></label>
+      <div class="inventory-fields">
+        <label><span class="sr-only">Item name</span><input data-inventory-name="${id}" maxlength="60" value="${escapeHTML(item.name)}" aria-label="Item name" /></label>
+        <label><span class="sr-only">Item notes</span><input class="inventory-detail" data-inventory-details="${id}" maxlength="100" value="${escapeHTML(item.details)}" placeholder="NO NOTES" aria-label="Item notes" /></label>
+      </div>
+      <button type="button" class="inventory-remove" data-inventory-remove="${id}" aria-label="Remove ${escapeHTML(item.name)}">[-]</button>
+    </div>`;
+  }).join('');
+}
+
+function inventoryItem(id) {
+  return state.character.inventory.find(item => item.id === id);
+}
+
+function syncStandardKit(id, checked) {
+  if (standardInventory.some(item => item.id === id)) state.character.kit[id] = checked;
 }
 
 function updateCreatorForm() {
@@ -960,11 +1010,60 @@ function bindEvents() {
     state.character.number = Number(button.dataset.number); save(); updateCharacterForm();
   }));
   bindRadioKeyboard('.number-option', button => { state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); });
-  $$('[data-kit]').forEach(input => input.addEventListener('change', event => {
-    state.character.kit[event.target.dataset.kit] = event.target.checked;
-    event.target.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
+  $('#inventory-list').addEventListener('change', event => {
+    const checkbox = event.target.closest('[data-inventory-check]');
+    if (!checkbox) return;
+    const item = inventoryItem(checkbox.dataset.inventoryCheck);
+    if (!item) return;
+    item.checked = checkbox.checked;
+    checkbox.nextElementSibling.textContent = item.checked ? '[X]' : '[ ]';
+    syncStandardKit(item.id, item.checked);
     save();
-  }));
+    updateCreatorForm();
+  });
+  $('#inventory-list').addEventListener('input', event => {
+    const nameInput = event.target.closest('[data-inventory-name]');
+    const detailInput = event.target.closest('[data-inventory-details]');
+    const input = nameInput || detailInput;
+    if (!input) return;
+    const item = inventoryItem(nameInput?.dataset.inventoryName || detailInput.dataset.inventoryDetails);
+    if (!item) return;
+    item[nameInput ? 'name' : 'details'] = input.value;
+    save();
+  });
+  $('#inventory-list').addEventListener('click', event => {
+    const button = event.target.closest('[data-inventory-remove]');
+    if (!button) return;
+    const id = button.dataset.inventoryRemove;
+    state.character.inventory = state.character.inventory.filter(item => item.id !== id);
+    syncStandardKit(id, false);
+    save();
+    updateCharacterForm();
+    updateCreatorForm();
+    showToast('Inventory item removed. Loss report pre-approved.');
+  });
+  $('#inventory-add-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const nameInput = $('#inventory-new-name');
+    const detailsInput = $('#inventory-new-details');
+    const name = nameInput.value.trim();
+    if (!name) return nameInput.focus();
+    if (state.character.inventory.length >= 40) {
+      showToast('Inventory limit reached. File a requisition for more pockets.');
+      return nameInput.focus();
+    }
+    state.character.inventory.push({
+      id: `item-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+      name: name.slice(0, 60),
+      details: detailsInput.value.trim().slice(0, 100),
+      checked: true
+    });
+    save();
+    renderInventory();
+    event.target.reset();
+    nameInput.focus();
+    showToast('Inventory item registered. Ownership remains a privilege.');
+  });
 
   $('#creator-clearance').addEventListener('change', event => chooseClearance(event, 'creator'));
   $('#creator-service').addEventListener('change', event => { setCharacterField('service', event.target.value); updateCharacterForm(); });
@@ -979,13 +1078,14 @@ function bindEvents() {
   }));
   bindRadioKeyboard('.creator-number-option', button => { state.character.number = Number(button.dataset.number); save(); updateCharacterForm(); updateCreatorForm(); });
   $$('[data-creator-kit]').forEach(input => input.addEventListener('change', event => {
-    state.character.kit[event.target.dataset.creatorKit] = event.target.checked;
+    const id = event.target.dataset.creatorKit;
+    state.character.kit[id] = event.target.checked;
+    const existing = inventoryItem(id);
+    if (existing) existing.checked = event.target.checked;
+    else if (event.target.checked) state.character.inventory.push({ ...standardInventory.find(item => item.id === id), checked: true });
     event.target.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
     save();
-    $$(`[data-kit="${event.target.dataset.creatorKit}"]`).forEach(mainInput => {
-      mainInput.checked = event.target.checked;
-      mainInput.nextElementSibling.textContent = event.target.checked ? '[X]' : '[ ]';
-    });
+    renderInventory();
   }));
   $('#creator-back').addEventListener('click', () => showCreatorStep(creationStep - 1));
   $('#creator-next').addEventListener('click', advanceCreator);
