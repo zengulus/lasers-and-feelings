@@ -90,13 +90,56 @@ const defaultState = {
   }
 };
 
-const sparks = [
-  '"The floor has detected unlicensed rhythm. Please remain perfectly still while it reclassifies your feet."',
-  'A mandatory morale parade arrives from the wrong direction, followed closely by its confused marching band.',
-  'An INFRARED maintenance hatch opens. It contains a warm breeze, a field of grass, and one very guilty bot.',
-  "Every citizen in the corridor receives a duplicate of the team's last private conversation, formatted as a loyalty quiz.",
-  "The sector's dessert printer has developed a union. It demands a negotiator with clearance above its frosting.",
-  'A helpful emergency shutter isolates the team with the thing it was trying to contain. The shutter begins apologizing.'
+const complicationSlotTables = {
+  authority: [
+    'Friend Computer', 'Internal Security', 'Research & Design', 'the Happiness Office',
+    'Production, Logistics & Commissary', 'Armed Forces', 'the clone registrar', 'an emergency oversight committee'
+  ],
+  action: [
+    'recover', 'escort', 'confiscate', 'repair', 'deliver', 'silence',
+    'reclassify', 'contain', 'audit', 'replace', 'activate', 'deactivate'
+  ],
+  target: [
+    'a runaway confession booth', 'the missing loyalty mascot', 'a crate of mislabelled laser barrels',
+    'an apologetic warbot', 'a prototype truth detector', 'the sector dessert printer',
+    'a forbidden Outdoors sample', 'a sentient requisition form', 'the emergency treason alarm',
+    'a suspiciously blue scrubot', 'the mandatory fun generator', "the team's replacement clones"
+  ],
+  location: [
+    'Transit Node 7-RED', 'the abandoned algae kitchens', 'R&D Test Chamber B',
+    'the mandatory dance auditorium', 'a stalled high-speed elevator', 'the clone decanting queue',
+    'an ULTRAVIOLET washroom', 'the reactor gift shop', 'Waste Reclamation Annex 3',
+    'a corridor that denies existing', 'the Computer Appreciation Museum', 'the food-vat observation gantry'
+  ],
+  deadline: [
+    'before IntSec audits the sector', 'before the next mandatory morale break', 'before the lights come back on',
+    'before a rival Troubleshooter team arrives', 'before lunch service begins', 'before R&D notices it is missing',
+    'before the sector celebration starts', 'before the current clone batch expires',
+    'before Friend Computer asks for a progress report', 'before the assignment is officially denied'
+  ],
+  twist: [
+    'the assignment has already been officially completed', 'the only authorized route crosses a higher-clearance zone',
+    'the target recognizes one Troubleshooter as its legal owner', 'another team has received exactly opposite orders',
+    'every witness communicates exclusively through dance', 'the floor reports each hurried footstep as treason',
+    'R&D insists everything be returned unscratched', 'success cancels lunch and failure cancels dinner',
+    'the team’s replacement clones arrived first', 'the orders contain a legally binding typo',
+    'all relevant equipment was issued to the wrong citizens', 'Friend Computer requires cheerful public updates every sixty seconds'
+  ]
+};
+
+const complicationTemplates = [
+  ({ authority, action, target, location, deadline, twist }) =>
+    `${authority} orders the team to ${action} ${target} at ${location} ${deadline}. Unfortunately, ${twist}.`,
+  ({ authority, action, target, location, deadline, twist }) =>
+    `Priority update from ${authority}: ${action} ${target} from ${location} ${deadline}. Be advised that ${twist}.`,
+  ({ authority, action, target, location, deadline, twist }) =>
+    `A routine visit to ${location} now requires the team to ${action} ${target} ${deadline}. Official reports add that ${twist}.`,
+  ({ authority, action, target, location, deadline, twist }) =>
+    `Responsibility for ${target} now belongs to ${authority}. The team must ${action} the target at ${location} ${deadline}, even though ${twist}.`,
+  ({ authority, action, target, location, deadline, twist }) =>
+    `According to ${authority}, there is no problem at ${location}. Go there, ${action} ${target}, and complete the correction ${deadline}; ${twist}.`,
+  ({ authority, action, target, location, deadline, twist }) =>
+    `New mandatory side objective: ${action} ${target} at ${location}. ${authority} requires completion ${deadline}, and ${twist}.`
 ];
 
 const missionSlotTables = {
@@ -978,7 +1021,11 @@ function bootApplication() {
   });
 }
 
-function generateSpark() { $('#spark-display p').textContent = choose(sparks); }
+function generateSpark() {
+  const slots = {};
+  Object.entries(complicationSlotTables).forEach(([slot, table]) => { slots[slot] = choose(table); });
+  $('#spark-display p').textContent = choose(complicationTemplates)(slots);
+}
 function rollMission() {
   const templateRoll = Math.floor(Math.random() * missionTemplates.length);
   const slotRolls = {};

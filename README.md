@@ -15,7 +15,7 @@ GM console:
 
 - `MISSION.EXE`: a mission generator built from 10 formats and five 25-entry tables.
 - `CLOCK.EXE`: a six-step ASCII pressure tracker.
-- `TROUBLE.EXE` and `RNDLAB.EXE`: complication and experimental item generators.
+- `TROUBLE.EXE` and `RNDLAB.EXE`: Mad Libs-style complication missions and experimental item generators.
 - `SECRETS.TXT` and `INCIDENT.LOG`: private local notes and table incidents.
 
 The interface uses literal ASCII directories, full-width tool boundaries, selected states, checkboxes, dice results, and meters. VT323 (loaded through Google Fonts), matching sticky Player/GM link bars, stepped ASCII typing reveals, responsive tool bays, a pitch-black screen, scanlines, and a curved CRT bezel give the toolbox an old NFO-viewer feel while retaining a single-column mobile fallback.
