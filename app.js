@@ -66,6 +66,7 @@ const standardInventory = [
 
 const defaultState = {
   mode: 'player',
+  preferences: { astigmatismFriendly: false },
   character: {
     name: '', nameRoot: '', clearance: 'RED', homeSector: '', clone: '1', service: '', number: 3, goal: '', society: '', societyRoll: '', power: '', powerRoll: '',
     kit: { laser: true, armor: true, pdc: true, credit: true },
@@ -256,6 +257,11 @@ function loadState() {
       : standardInventory.map(item => ({ ...item, checked: Boolean(legacyKit[item.id]) }));
     const loaded = {
       ...clone(defaultState), ...stored,
+      preferences: {
+        ...clone(defaultState).preferences,
+        ...(stored.preferences || {}),
+        astigmatismFriendly: Boolean(stored.preferences?.astigmatismFriendly)
+      },
       character: { ...characterDefaults, ...storedCharacter, kit: legacyKit, inventory },
       discord: { playerWebhook: String(stored.discord?.playerWebhook || '') },
       special: { ...clone(defaultState).special, ...(stored.special || {}) },
@@ -571,6 +577,7 @@ function setGameRollMode(mode) {
 }
 
 function renderAll() {
+  updateDisplayPreference();
   updateCharacterForm();
   updateCreatorForm();
   updateGMTools();
@@ -578,6 +585,16 @@ function renderAll() {
   updateRollControls();
   updateSpecialRolls();
   setGameRollMode(gameRollMode);
+}
+
+function updateDisplayPreference() {
+  const enabled = Boolean(state.preferences.astigmatismFriendly);
+  const button = $('#astigmatism-mode');
+  document.body.classList.toggle('astigmatism-friendly', enabled);
+  document.querySelector('meta[name="theme-color"]').content = enabled ? '#181a1d' : '#000000';
+  button.classList.toggle('active', enabled);
+  button.setAttribute('aria-pressed', String(enabled));
+  setAsciiState(button, enabled);
 }
 
 function setMode(mode, shouldScroll = false) {
@@ -1064,6 +1081,12 @@ function generateRD() {
 }
 
 function bindEvents() {
+  $('#astigmatism-mode').addEventListener('click', () => {
+    state.preferences.astigmatismFriendly = !state.preferences.astigmatismFriendly;
+    save();
+    updateDisplayPreference();
+    showToast(state.preferences.astigmatismFriendly ? 'Astigmatism-friendly display enabled.' : 'Standard display restored.');
+  });
   $$('.mode-button').forEach(button => button.addEventListener('click', () => setMode(button.dataset.mode, true)));
   bindRadioKeyboard('.mode-button', button => setMode(button.dataset.mode));
   $$('[data-scroll-to]').forEach(button => button.addEventListener('click', () => $(`#${button.dataset.scrollTo}`).scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })));

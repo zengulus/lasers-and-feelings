@@ -3,12 +3,12 @@
   --bg: #000;
   --screen: #000;
   --panel: rgba(0, 0, 0, .88);
-  --fg: #8dff9c;
-  --dim: #4dbb68;
-  --line: #287b42;
-  --hi: #ffe66d;
+  --fg: #f4f7ff;
+  --dim: #9aa7bd;
+  --line: #315a8a;
+  --hi: #5db4ff;
   --bad: #ff665c;
-  --cyan: #75f4ff;
+  --cyan: #9bdcff;
   --mono: "VT323", "Lucida Console", "Courier New", monospace;
 }
 
@@ -27,6 +27,32 @@ body {
 body.booting { overflow: hidden; }
 [hidden], dialog:not([open]) { display: none !important; }
 button, input, select, textarea, pre { font: inherit; }
+
+body.astigmatism-friendly {
+  --bg: #181a1d;
+  --screen: #1c1f23;
+  --panel: #20242a;
+  --fg: #e6e2d8;
+  --dim: #aeb4bd;
+  --line: #668db3;
+  --hi: #8fc5f4;
+  --cyan: #b1d9f6;
+  background: var(--bg);
+  font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  line-height: 1.42;
+  letter-spacing: .012em;
+}
+body.astigmatism-friendly .page-noise { background: none; }
+body.astigmatism-friendly .app-shell,
+body.astigmatism-friendly .boot-screen { background: var(--bg); }
+body.astigmatism-friendly button,
+body.astigmatism-friendly input,
+body.astigmatism-friendly select,
+body.astigmatism-friendly textarea,
+body.astigmatism-friendly .roll-result,
+body.astigmatism-friendly .special-result,
+body.astigmatism-friendly .toast { background: var(--screen); }
+body.astigmatism-friendly .boot-monitor { font-size: clamp(10px, 1.7vw, 17px); }
 
 button {
   min-height: 44px;
@@ -55,14 +81,14 @@ input, select, textarea {
   border: 1px solid var(--line);
   border-radius: 0;
   outline: 0;
-  background: rgba(0, 5, 2, .92);
+  background: rgba(0, 0, 0, .92);
   color: var(--fg);
   caret-color: var(--hi);
   box-shadow: inset 0 0 14px rgba(0, 0, 0, .72);
 }
 input:not([type="checkbox"]), select { height: 44px; }
 textarea { min-height: 9rem; resize: vertical; }
-input::placeholder, textarea::placeholder { color: #397e4c; opacity: 1; }
+input::placeholder, textarea::placeholder { color: #65748d; opacity: 1; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--hi);
   outline-offset: 2px;
@@ -88,18 +114,18 @@ a { color: var(--hi); }
   inset: 0;
   display: block;
   overflow: hidden;
-  border: clamp(8px, 1.25vw, 18px) solid #101410;
+  border: clamp(8px, 1.25vw, 18px) solid #10131a;
   border-radius: clamp(28px, 5vw, 72px) / clamp(22px, 4vw, 54px);
   pointer-events: none;
   background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .17) 0, rgba(0, 0, 0, .17) 1px, transparent 1px, transparent 4px);
   box-shadow:
-    inset 0 0 0 2px #31573a,
+    inset 0 0 0 2px #315a8a,
     inset 0 0 0 4px #000;
 }
 .page-noise::after {
   position: absolute;
   inset: 4px;
-  border: 1px solid rgba(141, 255, 156, .2);
+  border: 1px solid rgba(93, 180, 255, .22);
   border-radius: clamp(17px, 3.7vw, 50px) / clamp(13px, 2.8vw, 36px);
   content: "";
 }
@@ -139,6 +165,8 @@ a { color: var(--hi); }
 .brand-subtitle { display: block; color: var(--dim); }
 .topbar-actions { justify-self: end; text-align: right; }
 .clearance-pill { display: block; margin-bottom: 6px; color: var(--bad); }
+.display-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 8px; }
+.display-controls .clearance-pill { margin: 0; }
 .mode-switch { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 
 .terminal-directory {
@@ -282,7 +310,7 @@ a { color: var(--hi); }
 .number-heading { display: flex; justify-content: space-between; gap: 12px; }
 .number-output { color: var(--hi); font-size: 1.35em; }
 .number-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-.standard-goal { margin: 14px 0; padding: 9px; border-left: 2px solid var(--hi); background: rgba(255, 230, 109, .04); }
+.standard-goal { margin: 14px 0; padding: 9px; border-left: 2px solid var(--hi); background: rgba(93, 180, 255, .05); }
 
 .restricted-roll-grid, .creator-optional-grid, .creator-kit-grid {
   display: grid;
@@ -434,7 +462,7 @@ footer span { display: block; }
   .rules-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .topbar { grid-template-columns: minmax(0, 1fr); }
   .topbar-actions { justify-self: start; text-align: left; }
-  .mode-switch { justify-content: flex-start; }
+  .display-controls, .mode-switch { justify-content: flex-start; }
   .ascii-directory { grid-template-columns: minmax(0, 1fr); }
   .directory-links { grid-column: 1; }
 }
