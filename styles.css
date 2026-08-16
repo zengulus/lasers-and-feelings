@@ -402,7 +402,12 @@ footer span { display: block; }
 .boot-screen.is-leaving { display: none; }
 .boot-frame { width: min(80ch, 100%); margin: auto; text-align: center; }
 .boot-kicker, .boot-line:last-child { color: var(--hi); }
-.boot-monitor { margin: 1rem auto; text-align: left; }
+.boot-monitor {
+  margin: 1rem auto;
+  font-size: clamp(14px, 2vw, 20px);
+  line-height: 1;
+  text-align: left;
+}
 .boot-frame h1 { margin: 1rem 0; font-size: 1.7em; line-height: .85; }
 .boot-log { width: min(60ch, 100%); min-height: 7rem; margin: 1rem auto; text-align: left; }
 .boot-line { margin: 0; opacity: 0; }
